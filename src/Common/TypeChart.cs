@@ -1,10 +1,11 @@
 ﻿
 namespace PokeTyper
 {
-    internal class TypeChart
-    {
-        internal static readonly Effect[,] Chart = new Effect[,]
-        {   /*   NORMAL        FIGHT         FLYING        POISON        GROUND        ROCK          BUG           GHOST         STEEL         FIRE          WATER         GRASS         ELECTR        PSYCHC        ICE           DRAGON        DARK          FAIRY     */
+	internal class TypeChart
+	{
+		internal static readonly Effect[,] Chart = new Effect[,]
+		{
+/*               NORMAL        FIGHT         FLYING        POISON        GROUND        ROCK          BUG           GHOST         STEEL         FIRE          WATER         GRASS         ELECTR        PSYCHC        ICE           DRAGON        DARK          FAIRY     */
 /* NORMAL */{ Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xOne,  Effect.xZero, Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne  },
 /* FIGHT  */{ Effect.xTwo,  Effect.xOne,  Effect.xHalf, Effect.xHalf, Effect.xOne,  Effect.xTwo,  Effect.xHalf, Effect.xZero, Effect.xTwo,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xTwo,  Effect.xOne,  Effect.xTwo,  Effect.xHalf },
 /* FLYING */{ Effect.xOne,  Effect.xTwo,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xTwo,  Effect.xOne,  Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xTwo,  Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne  },
@@ -23,6 +24,6 @@ namespace PokeTyper
 /* DRAGON */{ Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xTwo,  Effect.xOne,  Effect.xZero },
 /* DARK   */{ Effect.xOne,  Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xTwo,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xTwo,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xHalf },
 /* FAIRY  */{ Effect.xOne,  Effect.xTwo,  Effect.xOne,  Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xHalf, Effect.xHalf, Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xOne,  Effect.xTwo,  Effect.xTwo,  Effect.xOne  }
-        };
-    }
+		};
+	}
 }

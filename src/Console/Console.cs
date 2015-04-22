@@ -1,211 +1,271 @@
-﻿
-namespace PokeTyper
+﻿using PokeTyper;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PokeTyperConsole
 {
-    using System;
-    using System.Collections.Generic;
+	public class Program
+	{
+		private const string ExitCommand = "exit";
+		private const string HelpCommand = "help";
+		private const string ErrorInvalidCommand = "Invalid command.";
+		private const string ErrorInvalidType = "Invalid type.";
 
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Welcome to PokeTyper!");
-            Console.WriteLine("Enter a type (or types) to see resistances, weaknesses, and immunities.");
-            Console.WriteLine("Example: Grass Poison");
+		private delegate void DoCommandDelegate(string[] arguments);
 
-            while (true)
-            {
-                Console.Write("\n> ");
-                string commandLine = Console.ReadLine().ToLower();
+		private class CommandData
+		{
+			public DoCommandDelegate DoCommand { get; private set; }
+			public string Arguments { get; private set; }
+			public string Description { get; private set; }
 
-                if (commandLine.Equals(string.Empty))
-                {
-                    continue;
-                }
-                else if (commandLine.Equals("exit"))
-                {
-                    break;
-                }
-                else if (commandLine.Equals("best"))
-                {
-                    int numTypes = 0;
-                    int maxNumResistances = -1;
-                    int numTypesWithMaxResistances = -1;
-                    int typesLength = Enum.GetValues(typeof(Types)).Length;
-                    int numResistances;
-                    Type t;
+			public CommandData(DoCommandDelegate doCommand, string arguments, string description)
+			{
+				this.DoCommand = doCommand;
+				this.Arguments = arguments;
+				this.Description = description;
+			}
+		}
 
-                    for (int i = 0; i < typesLength; i++)
-                    {
-                        Types type1 = (Types)i;
-                        numTypes++;
-                        t = PokeTyperMethods.MakeType(type1);
-                        numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
-                        if (numResistances > maxNumResistances)
-                        {
-                            maxNumResistances = numResistances;
-                            numTypesWithMaxResistances = 1;
-                        }
-                        else if (numResistances == maxNumResistances)
-                        {
-                            numTypesWithMaxResistances++;
-                        }
+		/// <summary>
+		/// Keys represents available commands. Values are tuples of 2 strings. The first is the
+		/// arguments of the command. The second is the description.
+		/// </summary>
+		private static readonly Dictionary<string, CommandData> Commands =
+			new Dictionary<string, CommandData>
+		{
+			{ ExitCommand, new CommandData(null, string.Empty, "Exits the program.") },
+			{ HelpCommand, new CommandData(DisplayHelp, string.Empty, "Shows the available commands and descriptions for those commands.") },
+			{ "type", new CommandData(DisplayType, "type1 [type2]", "Displays the weaknesses, resistances, and immunities of the type combination.") },
+			{ "coverage", new CommandData(DisplayCoverage, "type1 [type2] [type3] [type4]", "Displays the type coverage of the given attacking types.") },
+			{ "resist", new CommandData(DisplayResistances, "numResistances", "Displays all the types that have that many resistances (including immunities).") },
+			{ "best", new CommandData(DisplayBest, string.Empty, "Displays the types that have that the most number of resistances (including immunities).") },
 
-                        for (int j = i + 1; j < typesLength; j++)
-                        {
-                            Types type2 = (Types)j;
-                            numTypes++;
-                            t = PokeTyperMethods.MakeType(type1, type2);
-                            numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
-                            if (numResistances > maxNumResistances)
-                            {
-                                maxNumResistances = numResistances;
-                                numTypesWithMaxResistances = 1;
-                            }
-                            else if (numResistances == maxNumResistances)
-                            {
-                                numTypesWithMaxResistances++;
-                            }
-                        }
-                    }
+		};
 
-                    if (maxNumResistances != -1)
-                    {
-                        Console.WriteLine("Number of types: " + numTypes);
-                        Console.WriteLine("Max number of resistances: " + maxNumResistances);
-                        Console.WriteLine("Number of types of max number of resistances: " + numTypesWithMaxResistances);
-                    }
+		public static void Main(string[] args)
+		{
+			Console.WriteLine("Welcome to PokeTyper!");
+			Console.WriteLine(string.Format("Enter \"{0}\" to see the available commands.", HelpCommand));
 
-                    continue;
-                }
+			while (true)
+			{
+				Console.Write("\n> ");
+				var commandLine = Console.ReadLine().ToLower().Split(' ');
+				var command = commandLine[0];
 
-                string[] commands = commandLine.Split(' ');
-                if (commands.Length <= 0 || commands.Length > 5)
-                {
-                    Console.WriteLine("Command is invalid.");
-                    continue;
-                }
+				if (command.Equals(string.Empty))
+				{
+					continue;
+				}
+				else if (command.Equals(ExitCommand))
+				{
+					break;
+				}
 
-                if (commands[0].Equals("resist"))
-                {
-                    if (commands.Length != 2)
-                    {
-                        Console.WriteLine("Invalid command.");
-                        continue;
-                    }
+				var arguments = new string[commandLine.Length - 1];
+				Array.Copy(commandLine, 1, arguments, 0, arguments.Length);
 
-                    uint numDesiredResistances;
-                    try
-                    {
-                        numDesiredResistances = uint.Parse(commands[1]);
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Argument must be a nonnegative integer.");
-                        continue;
-                    }
-                    catch (OverflowException)
-                    {
-                        Console.WriteLine("Argument too large.");
-                        continue;
-                    }
+				bool executedCommand = false;
+				foreach (var cmd in Commands)
+				{
+					if (cmd.Key.Equals(command))
+					{
+						cmd.Value.DoCommand(arguments);
+						executedCommand = true;
 
-                    List<Type> types = new List<Type>();
-                    int typesLength = Enum.GetValues(typeof(Types)).Length;
-                    int numResistances;
-                    Type t;
-                    for (int i = 0; i < typesLength; i++)
-                    {
-                        Types type1 = (Types)i;
-                        t = PokeTyperMethods.MakeType(type1);
-                        numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
-                        if (numResistances == numDesiredResistances)
-                        {
-                            types.Add(t);
-                        }
+						break;
+					}
+				}
 
-                        for (int j = i + 1; j < typesLength; j++)
-                        {
-                            Types type2 = (Types)j;
-                            t = PokeTyperMethods.MakeType(type1, type2);
-                            numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
-                            if (numResistances == numDesiredResistances)
-                            {
-                                types.Add(t);
-                            }
-                        }
-                    }
+				if (!executedCommand)
+				{
+					Console.WriteLine(ErrorInvalidCommand);
+				}
+			}
+		}
 
-                    Console.WriteLine("Number of types with {0} resistances: {1}", numDesiredResistances, types.Count);
-                    foreach (Type type in types)
-                    {
-                        Console.WriteLine(type.ToString() + "\n");
-                    }
-                }
-                else if (commands[0].Equals("type"))
-                {
-                    try
-                    {
-                        Type type;
-                        if (commands.Length == 2)
-                        {
-                            type = PokeTyperMethods.MakeType(commands[1]);
-                        }
-                        else if (commands.Length == 3)
-                        {
-                            type = PokeTyperMethods.MakeType(commands[1], commands[2]);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid command.");
-                            continue;
-                        }
+		private static void DisplayHelp(string[] arguments)
+		{
+			if (arguments.Length != 0)
+			{
+				Console.WriteLine(ErrorInvalidCommand);
 
-                        Console.WriteLine(type.ToString());
-                    }
-                    catch (ArgumentException)
-                    {
-                        Console.WriteLine("Invalid type.");
-                    }
-                }
-                else if (commands[0].Equals("coverage"))
-                {
-                    try
-                    {
-                        Coverage coverage;
-                        if (commands.Length == 2)
-                        {
-                            coverage = PokeTyperMethods.MakeCoverage(commands[1]);
-                        }
-                        else if (commands.Length == 3)
-                        {
-                            coverage = PokeTyperMethods.MakeCoverage(commands[1], commands[2]);
-                        }
-                        else if (commands.Length == 4)
-                        {
-                            coverage = PokeTyperMethods.MakeCoverage(commands[1], commands[2], commands[3]);
-                        }
-                        else if (commands.Length == 5)
-                        {
-                            coverage = PokeTyperMethods.MakeCoverage(commands[1], commands[2], commands[3], commands[4]);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid command.");
-                            continue;
-                        }
+				return;
+			}
 
-                        Console.WriteLine(coverage.ToString());
-                    }
-                    catch (ArgumentException)
-                    {
-                        Console.WriteLine("Invalid type.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Invalid command.");
-                }
-            }
-        }
-    }
+			var sb = new StringBuilder(
+				"Available commands:\n",
+				Commands.Count * 100); // ~100 chars per command and description
+
+			foreach (var command in Commands)
+			{
+				sb.AppendFormat(
+					"{0} {1}\n    {2}\n",
+					command.Key,
+					command.Value.Arguments,
+					command.Value.Description);
+			}
+
+			Console.Write(sb);
+		}
+
+		private static void DisplayType(string[] arguments)
+		{
+			if (arguments.Length <= 0 || arguments.Length > 2)
+			{
+				Console.WriteLine(ErrorInvalidCommand);
+
+				return;
+			}
+
+			try
+			{
+				var type = PokeTyperMethods.MakeType(arguments);
+				Console.WriteLine(type.ToString());
+			}
+			catch (ArgumentException)
+			{
+				Console.WriteLine(ErrorInvalidType);
+			}
+		}
+
+		private static void DisplayCoverage(string[] arguments)
+		{
+			if (arguments.Length <= 0 || arguments.Length > 4)
+			{
+				Console.WriteLine(ErrorInvalidCommand);
+
+				return;
+			}
+
+			try
+			{
+				var coverage = PokeTyperMethods.MakeCoverage(arguments);
+				Console.WriteLine(coverage.ToString());
+			}
+			catch (ArgumentException)
+			{
+				Console.WriteLine(ErrorInvalidType);
+			}
+		}
+
+		private static void DisplayResistances(string[] arguments)
+		{
+			if (arguments.Length != 1)
+			{
+				Console.WriteLine(ErrorInvalidCommand);
+
+				return;
+			}
+
+			uint numDesiredResistances = 0U;
+			const string badArg = "Argument must be a nonnegative integer.";
+			try
+			{
+				bool parsed = uint.TryParse(arguments[0], out numDesiredResistances);
+				if (!parsed)
+				{
+					Console.WriteLine(badArg);
+				}
+			}
+			catch (ArgumentException ex)
+			{
+				Console.WriteLine(badArg + "\n" + ex);
+
+				return;
+			}
+
+			var types = new List<PokemonType>();
+			var typesLength = Enum.GetValues(typeof(TypeToken)).Length;
+			int numResistances;
+			PokemonType t;
+			for (int i = 0; i < typesLength; i++)
+			{
+				var type1 = (TypeToken)i;
+				t = PokeTyperMethods.MakeType(type1);
+				numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
+				if (numResistances == numDesiredResistances)
+				{
+					types.Add(t);
+				}
+
+				for (int j = i + 1; j < typesLength; j++)
+				{
+					var type2 = (TypeToken)j;
+					t = PokeTyperMethods.MakeType(type1, type2);
+					numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
+					if (numResistances == numDesiredResistances)
+					{
+						types.Add(t);
+					}
+				}
+			}
+
+			Console.WriteLine("Number of types with {0} resistances: {1}", numDesiredResistances, types.Count);
+			foreach (var type in types)
+			{
+				Console.WriteLine(type.ToString() + "\n");
+			}
+		}
+
+		public static void DisplayBest(string[] arguments)
+		{
+			if (arguments.Length != 0)
+			{
+				Console.WriteLine(ErrorInvalidCommand);
+
+				return;
+			}
+
+			var typesLength = Enum.GetValues(typeof(TypeToken)).Length;
+			int numTypes = 0;
+			int maxNumResistances = -1;
+			int numTypesWithMaxResistances = -1;
+			int numResistances;
+			PokemonType t;
+
+			for (int i = 0; i < typesLength; i++)
+			{
+				var type1 = (TypeToken)i;
+				numTypes++;
+				t = PokeTyperMethods.MakeType(type1);
+				numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
+				if (numResistances > maxNumResistances)
+				{
+					maxNumResistances = numResistances;
+					numTypesWithMaxResistances = 1;
+				}
+				else if (numResistances == maxNumResistances)
+				{
+					numTypesWithMaxResistances++;
+				}
+
+				for (int j = i + 1; j < typesLength; j++)
+				{
+					var type2 = (TypeToken)j;
+					numTypes++;
+					t = PokeTyperMethods.MakeType(type1, type2);
+					numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
+					if (numResistances > maxNumResistances)
+					{
+						maxNumResistances = numResistances;
+						numTypesWithMaxResistances = 1;
+					}
+					else if (numResistances == maxNumResistances)
+					{
+						numTypesWithMaxResistances++;
+					}
+				}
+			}
+
+			if (maxNumResistances != -1)
+			{
+				Console.WriteLine("Number of types: " + numTypes);
+				Console.WriteLine("Max number of resistances: " + maxNumResistances);
+				Console.WriteLine("Number of types of max number of resistances: " + numTypesWithMaxResistances);
+			}
+		}
+	}
 }
