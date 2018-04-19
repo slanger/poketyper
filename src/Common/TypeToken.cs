@@ -1,5 +1,4 @@
-﻿
-namespace PokeTyper
+﻿namespace PokeTyper
 {
 	public enum TypeToken : int
 	{
