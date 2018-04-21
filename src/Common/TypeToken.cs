@@ -19,6 +19,6 @@
 		Ice,
 		Dragon,
 		Dark,
-		Fairy
+		Fairy,
 	}
 }

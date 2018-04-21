@@ -2,9 +2,9 @@
 {
 	internal enum Effect
 	{
-		xOne,
-		xTwo,
-		xHalf,
-		xZero
+		OneX,
+		TwoX,
+		HalfX,
+		ZeroX,
 	}
 }

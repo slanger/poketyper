@@ -8,7 +8,7 @@ namespace PokeTyper
 {
 	public class Coverage : IComparable<Coverage>
 	{
-		private const string ErrorNotEnoughTypes =
+		private const string errorNotEnoughTypes =
 			"This Coverage does not have enough PokemonTypes.";
 
 		public readonly PokemonType[] Effective4x;
@@ -35,7 +35,7 @@ namespace PokeTyper
 			{
 				if (this.NumTypes < 2)
 				{
-					throw new InvalidOperationException(ErrorNotEnoughTypes);
+					throw new InvalidOperationException(errorNotEnoughTypes);
 				}
 
 				return this.types[1];
@@ -48,7 +48,7 @@ namespace PokeTyper
 			{
 				if (this.NumTypes < 3)
 				{
-					throw new InvalidOperationException(ErrorNotEnoughTypes);
+					throw new InvalidOperationException(errorNotEnoughTypes);
 				}
 
 				return this.types[2];
@@ -61,7 +61,7 @@ namespace PokeTyper
 			{
 				if (this.NumTypes < 4)
 				{
-					throw new InvalidOperationException(ErrorNotEnoughTypes);
+					throw new InvalidOperationException(errorNotEnoughTypes);
 				}
 
 				return this.types[3];

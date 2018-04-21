@@ -236,56 +236,56 @@ namespace PokeTyper
 					continue;
 				}
 
-				var effect = TypeChart.Chart[row, column];
+				Effect effect = TypeChart.Chart[row, column];
 				switch (effect)
 				{
-					case Effect.xHalf: // this type resists attacking type
-						if (resist2x.Remove(attackingType))
-						{
-							resist4x.Add(attackingType);
-						}
-						else if (weakTo2x.Remove(attackingType))
-						{
-							normal.Add(attackingType);
-						}
-						else
-						{
-							normal.Remove(attackingType);
-							resist2x.Add(attackingType);
-						}
-
-						break;
-					case Effect.xOne: // this type is neither resistant nor weak to attacking type
-						if (!resist2x.Contains(attackingType) && !weakTo2x.Contains(attackingType))
-						{
-							normal.Add(attackingType);
-						}
-
-						break;
-					case Effect.xTwo: // this type is weak to attacking type
-						if (resist2x.Remove(attackingType))
-						{
-							normal.Add(attackingType);
-						}
-						else if (weakTo2x.Remove(attackingType))
-						{
-							weakTo4x.Add(attackingType);
-						}
-						else
-						{
-							normal.Remove(attackingType);
-							weakTo2x.Add(attackingType);
-						}
-
-						break;
-					case Effect.xZero: // this type is immune to attacking type
-						resist2x.Remove(attackingType);
+				case Effect.HalfX: // this type resists attacking type
+					if (resist2x.Remove(attackingType))
+					{
+						resist4x.Add(attackingType);
+					}
+					else if (weakTo2x.Remove(attackingType))
+					{
+						normal.Add(attackingType);
+					}
+					else
+					{
 						normal.Remove(attackingType);
-						weakTo2x.Remove(attackingType);
+						resist2x.Add(attackingType);
+					}
 
-						immune.Add(attackingType);
+					break;
+				case Effect.OneX: // this type is neither resistant nor weak to attacking type
+					if (!resist2x.Contains(attackingType) && !weakTo2x.Contains(attackingType))
+					{
+						normal.Add(attackingType);
+					}
 
-						break;
+					break;
+				case Effect.TwoX: // this type is weak to attacking type
+					if (resist2x.Remove(attackingType))
+					{
+						normal.Add(attackingType);
+					}
+					else if (weakTo2x.Remove(attackingType))
+					{
+						weakTo4x.Add(attackingType);
+					}
+					else
+					{
+						normal.Remove(attackingType);
+						weakTo2x.Add(attackingType);
+					}
+
+					break;
+				case Effect.ZeroX: // this type is immune to attacking type
+					resist2x.Remove(attackingType);
+					normal.Remove(attackingType);
+					weakTo2x.Remove(attackingType);
+
+					immune.Add(attackingType);
+
+					break;
 				}
 			}
 		}
