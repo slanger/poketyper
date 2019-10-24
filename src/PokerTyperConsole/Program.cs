@@ -37,11 +37,10 @@ namespace PokeTyperConsole
 		{
 			{ ExitCommand, new CommandData(null, string.Empty, "Exits the program.") },
 			{ HelpCommand, new CommandData(DisplayHelp, string.Empty, "Shows the available commands and descriptions for those commands.") },
-			{ "type", new CommandData(DisplayType, "type1 [type2]", "Displays the weaknesses, resistances, and immunities of the type combination.") },
-			{ "coverage", new CommandData(DisplayCoverage, "type1 [type2] [type3] [type4]", "Displays the type coverage of the given attacking types.") },
-			{ "resist", new CommandData(DisplayResistances, "numResistances", "Displays all the types that have that many resistances (including immunities).") },
+			{ "type", new CommandData(DisplayType, "<type1> [<type2>]", "Displays the weaknesses, resistances, and immunities of the type combination.") },
+			{ "coverage", new CommandData(DisplayCoverage, "<type1> [<type2>] [<type3>] [<type4>]", "Displays the type coverage of the given attacking types.") },
+			{ "resist", new CommandData(DisplayResistances, "<num_resistances>", "Displays all the types that have that many resistances (including immunities).") },
 			{ "best", new CommandData(DisplayBest, string.Empty, "Displays the types that have that the most number of resistances (including immunities).") },
-
 		};
 
 		public static void Main(string[] args)
@@ -161,7 +160,7 @@ namespace PokeTyperConsole
 			}
 
 			uint numDesiredResistances = 0U;
-			const string badArg = "Argument must be a nonnegative integer.";
+			const string badArg = "Argument must be a non-negative integer.";
 			try
 			{
 				bool parsed = uint.TryParse(arguments[0], out numDesiredResistances);
@@ -206,7 +205,7 @@ namespace PokeTyperConsole
 			Console.WriteLine("Number of types with {0} resistances: {1}", numDesiredResistances, types.Count);
 			foreach (var type in types)
 			{
-				Console.WriteLine(type.ToString() + "\n");
+				Console.WriteLine("\n" + type.ToString());
 			}
 		}
 
