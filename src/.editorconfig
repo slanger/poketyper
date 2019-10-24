@@ -1,10 +1,12 @@
-# EditorConfig: http://editorconfig.org/
+﻿# EditorConfig: http://editorconfig.org/
 
 root = true
 
 [*]
 insert_final_newline = true
 trim_trailing_whitespace = true
+end_of_line = crlf
+charset = utf-8
 
 [*.cs]
 indent_style = tab
