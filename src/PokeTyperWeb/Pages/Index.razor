@@ -1,0 +1,99 @@
+@page "/"
+
+<h1>PokeTyper</h1>
+
+<p>Learn more about any type or type combination. Just input one or two types below and click "Make type".</p>
+
+<p>
+    <input placeholder="Type 1" @bind="type1" />
+    <input placeholder="Type 2" @bind="type2" />
+    <button @onclick="MakeType">Make type</button>
+</p>
+
+@if (ranOnce)
+{
+    @if (typeInfo == null)
+    {
+        <p>Invalid type/type combination</p>
+    }
+    else
+    {
+        <h4>@typeInfo.Name</h4>
+        <h5>x1/4</h5>
+        <ul>
+            @foreach (var t in typeInfo.Resist4x)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+        <h5>x1/2</h5>
+        <ul>
+            @foreach (var t in typeInfo.Resist2x)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+        <h5>x1</h5>
+        <ul>
+            @foreach (var t in typeInfo.Normal)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+        <h5>x2</h5>
+        <ul>
+            @foreach (var t in typeInfo.WeakTo2x)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+        <h5>x4</h5>
+        <ul>
+            @foreach (var t in typeInfo.WeakTo4x)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+        <h5>x0</h5>
+        <ul>
+            @foreach (var t in typeInfo.Immune)
+            {
+                <li>@t.ToString()</li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    private string type1;
+    private string type2;
+    private PokemonType typeInfo;
+    private bool ranOnce;
+
+    private void MakeType()
+    {
+        ranOnce = true;
+        if (string.IsNullOrWhiteSpace(type1))
+        {
+            typeInfo = null;
+            return;
+        }
+        string[] types;
+        if (string.IsNullOrWhiteSpace(type2))
+        {
+            types = new[] { type1 };
+        }
+        else
+        {
+            types = new[] { type1, type2 };
+        }
+        try
+        {
+            typeInfo = PokeTyperMethods.MakeType(types);
+        }
+        catch (ArgumentException)
+        {
+            typeInfo = null;
+        }
+    }
+}
