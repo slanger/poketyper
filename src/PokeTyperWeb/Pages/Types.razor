@@ -5,9 +5,8 @@
 <p>Learn more about any Pokemon type or type combination. Just input one or two types below and click "Make type".</p>
 
 <p>
-    <input placeholder="Type 1" @bind="type1" />
-    <input placeholder="Type 2" @bind="type2" />
-    <!-- TODO: Allow user to press enter to press button. -->
+    <input placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" />
+    <input placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" />
     <button @onclick="MakeType">Make type</button>
 </p>
 
@@ -71,6 +70,14 @@
     private string type2;
     private PokemonType typeInfo;
     private bool ranOnce;
+
+    private void OnKeyUp(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            MakeType();
+        }
+    }
 
     private void MakeType()
     {
