@@ -121,7 +121,7 @@ namespace PokeTyperConsole
 
 			try
 			{
-				var type = PokeTyperMethods.MakeType(arguments);
+				var type = API.MakeType(arguments);
 				Console.WriteLine(type.ToString());
 			}
 			catch (ArgumentException)
@@ -141,7 +141,7 @@ namespace PokeTyperConsole
 
 			try
 			{
-				var coverage = PokeTyperMethods.MakeCoverage(arguments);
+				var coverage = API.MakeCoverage(arguments);
 				Console.WriteLine(coverage.ToString());
 			}
 			catch (ArgumentException)
@@ -183,7 +183,7 @@ namespace PokeTyperConsole
 			for (int i = 0; i < typesLength; i++)
 			{
 				var type1 = (TypeToken)i;
-				t = PokeTyperMethods.MakeType(type1);
+				t = API.MakeType(type1);
 				numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
 				if (numResistances == numDesiredResistances)
 				{
@@ -193,7 +193,7 @@ namespace PokeTyperConsole
 				for (int j = i + 1; j < typesLength; j++)
 				{
 					var type2 = (TypeToken)j;
-					t = PokeTyperMethods.MakeType(type1, type2);
+					t = API.MakeType(type1, type2);
 					numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
 					if (numResistances == numDesiredResistances)
 					{
@@ -229,7 +229,7 @@ namespace PokeTyperConsole
 			{
 				var type1 = (TypeToken)i;
 				numTypes++;
-				t = PokeTyperMethods.MakeType(type1);
+				t = API.MakeType(type1);
 				numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
 				if (numResistances > maxNumResistances)
 				{
@@ -245,7 +245,7 @@ namespace PokeTyperConsole
 				{
 					var type2 = (TypeToken)j;
 					numTypes++;
-					t = PokeTyperMethods.MakeType(type1, type2);
+					t = API.MakeType(type1, type2);
 					numResistances = t.Resist2x.Length + t.Resist4x.Length + t.Immune.Length;
 					if (numResistances > maxNumResistances)
 					{

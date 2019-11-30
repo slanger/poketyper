@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -223,7 +223,7 @@ namespace PokeTyper
 			for (int i = 0; i < typesLength; i++)
 			{
 				var t1 = (TypeToken)i;
-				t = PokeTyperMethods.MakeType(t1);
+				t = API.MakeType(t1);
 
 				foreach (var type in types)
 				{
@@ -241,7 +241,7 @@ namespace PokeTyper
 				for (int j = i + 1; j < typesLength; j++)
 				{
 					var t2 = (TypeToken)j;
-					t = PokeTyperMethods.MakeType(t1, t2);
+					t = API.MakeType(t1, t2);
 
 					foreach (var type in types)
 					{
