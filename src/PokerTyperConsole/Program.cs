@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using PokeTyper;
@@ -10,7 +10,6 @@ namespace PokeTyperConsole
 		private const string ExitCommand = "exit";
 		private const string HelpCommand = "help";
 		private const string ErrorInvalidCommand = "Invalid command.";
-		private const string ErrorInvalidType = "Invalid type.";
 
 		private delegate void DoCommandDelegate(string[] arguments);
 
@@ -119,15 +118,19 @@ namespace PokeTyperConsole
 				return;
 			}
 
-			try
+			var types = new List<TypeToken>(2);
+			foreach (string arg in arguments)
 			{
-				var type = API.MakeType(arguments);
-				Console.WriteLine(type.ToString());
+				TypeToken t;
+				if (!API.TryConvertStringToType(arg, out t))
+				{
+					Console.WriteLine("Invalid type: \"" + arg + "\"");
+					return;
+				}
+				types.Add(t);
 			}
-			catch (ArgumentException)
-			{
-				Console.WriteLine(ErrorInvalidType);
-			}
+			var type = API.MakeType(types.ToArray());
+			Console.WriteLine(type.ToString());
 		}
 
 		private static void DisplayCoverage(string[] arguments)
@@ -139,15 +142,19 @@ namespace PokeTyperConsole
 				return;
 			}
 
-			try
+			var types = new List<TypeToken>(4);
+			foreach (string arg in arguments)
 			{
-				var coverage = API.MakeCoverage(arguments);
-				Console.WriteLine(coverage.ToString());
+				TypeToken t;
+				if (!API.TryConvertStringToType(arg, out t))
+				{
+					Console.WriteLine("Invalid type: \"" + arg + "\"");
+					return;
+				}
+				types.Add(t);
 			}
-			catch (ArgumentException)
-			{
-				Console.WriteLine(ErrorInvalidType);
-			}
+			var coverage = API.MakeCoverage(types.ToArray());
+			Console.WriteLine(coverage.ToString());
 		}
 
 		private static void DisplayResistances(string[] arguments)

@@ -7,6 +7,7 @@
 <p>Input up to four move types below and click "Get coverage".</p>
 
 <p>
+    <!-- TODO: Add a drop-down listing the available Pokemon types. -->
     <input placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" />
     <input placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" />
     <input placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" />
@@ -14,59 +15,55 @@
     <button @onclick="GetCoverage">Get coverage</button>
 </p>
 
-@if (ranOnce)
+@if (error != null)
 {
-    @if (coverage == null)
-    {
-        <!-- TODO: Display which type is invalid. -->
-        <p>Invalid type</p>
-    }
-    else
-    {
-        <h4>@coverage.Name</h4>
-        <h5>x1/4</h5>
-        <ul>
-            @foreach (var t in coverage.Effective025x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-        <h5>x1/2</h5>
-        <ul>
-            @foreach (var t in coverage.Effective05x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-        <h5>x1</h5>
-        <ul>
-            @foreach (var t in coverage.Effective1x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-        <h5>x2</h5>
-        <ul>
-            @foreach (var t in coverage.Effective2x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-        <h5>x4</h5>
-        <ul>
-            @foreach (var t in coverage.Effective4x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-        <h5>x0</h5>
-        <ul>
-            @foreach (var t in coverage.Effective0x)
-            {
-                <li>@t.Name</li>
-            }
-        </ul>
-    }
+    <p>Error: @error</p>
+}
+else if (coverage != null)
+{
+    <h4>@coverage.Name</h4>
+    <h5>x1/4</h5>
+    <ul>
+        @foreach (var t in coverage.Effective025x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5>x1/2</h5>
+    <ul>
+        @foreach (var t in coverage.Effective05x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5>x1</h5>
+    <ul>
+        @foreach (var t in coverage.Effective1x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5>x2</h5>
+    <ul>
+        @foreach (var t in coverage.Effective2x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5>x4</h5>
+    <ul>
+        @foreach (var t in coverage.Effective4x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5>x0</h5>
+    <ul>
+        @foreach (var t in coverage.Effective0x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
 }
 
 @code {
@@ -75,7 +72,7 @@
     private string type3;
     private string type4;
     private PokeTyper.Coverage coverage;
-    private bool ranOnce;
+    private string error;
 
     private void OnKeyUp(KeyboardEventArgs args)
     {
@@ -87,11 +84,19 @@
 
     private void GetCoverage()
     {
-        var types = new List<string>(4);
-        foreach (var t in new string[] { type1, type2, type3, type4 })
+        coverage = null;
+        error = null;
+        var types = new List<TypeToken>(4);
+        foreach (var type in new string[] { type1, type2, type3, type4 })
         {
-            if (!string.IsNullOrWhiteSpace(t))
+            if (!string.IsNullOrWhiteSpace(type))
             {
+                TypeToken t;
+                if (!API.TryConvertStringToType(type, out t))
+                {
+                    error = "Invalid type: \"" + type + "\"";
+                    return;
+                }
                 types.Add(t);
             }
         }
@@ -99,14 +104,6 @@
         {
             return;
         }
-        ranOnce = true;
-        try
-        {
-            coverage = API.MakeCoverage(types.ToArray());
-        }
-        catch (ArgumentException)
-        {
-            coverage = null;
-        }
+        coverage = API.MakeCoverage(types.ToArray());
     }
 }

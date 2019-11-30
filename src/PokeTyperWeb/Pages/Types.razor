@@ -5,71 +5,68 @@
 <p>Learn more about any Pokemon type or type combination. Just input one or two types below and click "Make type".</p>
 
 <p>
+    <!-- TODO: Add a drop-down listing the available Pokemon types. -->
     <input placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" />
     <input placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" />
     <button @onclick="MakeType">Make type</button>
 </p>
 
-@if (ranOnce)
+@if (error != null)
 {
-    @if (typeInfo == null)
-    {
-        <!-- TODO: Display which type is invalid. -->
-        <p>Invalid type</p>
-    }
-    else
-    {
-        <h4>@typeInfo.Name</h4>
-        <h5>x1/4</h5>
-        <ul>
-            @foreach (var t in typeInfo.Resist4x)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-        <h5>x1/2</h5>
-        <ul>
-            @foreach (var t in typeInfo.Resist2x)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-        <h5>x1</h5>
-        <ul>
-            @foreach (var t in typeInfo.Normal)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-        <h5>x2</h5>
-        <ul>
-            @foreach (var t in typeInfo.WeakTo2x)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-        <h5>x4</h5>
-        <ul>
-            @foreach (var t in typeInfo.WeakTo4x)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-        <h5>x0</h5>
-        <ul>
-            @foreach (var t in typeInfo.Immune)
-            {
-                <li>@t.ToString()</li>
-            }
-        </ul>
-    }
+    <p>Error: @error</p>
+}
+else if (typeInfo != null)
+{
+    <h4>@typeInfo.Name</h4>
+    <h5>x1/4</h5>
+    <ul>
+        @foreach (var t in typeInfo.Resist4x)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5>x1/2</h5>
+    <ul>
+        @foreach (var t in typeInfo.Resist2x)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5>x1</h5>
+    <ul>
+        @foreach (var t in typeInfo.Normal)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5>x2</h5>
+    <ul>
+        @foreach (var t in typeInfo.WeakTo2x)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5>x4</h5>
+    <ul>
+        @foreach (var t in typeInfo.WeakTo4x)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5>x0</h5>
+    <ul>
+        @foreach (var t in typeInfo.Immune)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
 }
 
 @code {
     private string type1;
     private string type2;
     private PokemonType typeInfo;
-    private bool ranOnce;
+    private string error;
 
     private void OnKeyUp(KeyboardEventArgs args)
     {
@@ -81,11 +78,19 @@
 
     private void MakeType()
     {
-        var types = new List<string>(2);
-        foreach (var t in new string[] { type1, type2 })
+        typeInfo = null;
+        error = null;
+        var types = new List<TypeToken>(2);
+        foreach (var type in new string[] { type1, type2 })
         {
-            if (!string.IsNullOrWhiteSpace(t))
+            if (!string.IsNullOrWhiteSpace(type))
             {
+                TypeToken t;
+                if (!API.TryConvertStringToType(type, out t))
+                {
+                    error = "Invalid type: \"" + type + "\"";
+                    return;
+                }
                 types.Add(t);
             }
         }
@@ -93,14 +98,6 @@
         {
             return;
         }
-        ranOnce = true;
-        try
-        {
-            typeInfo = API.MakeType(types.ToArray());
-        }
-        catch (ArgumentException)
-        {
-            typeInfo = null;
-        }
+        typeInfo = API.MakeType(types.ToArray());
     }
 }
