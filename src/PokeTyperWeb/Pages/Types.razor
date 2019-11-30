@@ -10,9 +10,18 @@
     <button @onclick="MakeType">Make type</button>
 
     <datalist id="types">
-        @foreach (TypeToken t in Enum.GetValues(typeof(TypeToken)))
-        {
-            <option value="@t.ToString()" />
+        @{
+            Array tokens = Enum.GetValues(typeof(TypeToken));
+            var names = new List<string>(tokens.Length);
+            foreach (TypeToken t in tokens)
+            {
+                names.Add(t.ToString());
+            }
+            names.Sort();
+            foreach (string n in names)
+            {
+                <option value="@n" />
+            }
         }
     </datalist>
 </p>

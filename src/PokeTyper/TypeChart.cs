@@ -1,9 +1,10 @@
-﻿namespace PokeTyper
+namespace PokeTyper
 {
 	internal class TypeChart
 	{
 		// This type chart is based on the Generation 6 Pokemon games. Other generations have
 		// different type charts.
+		// TODO: Create and use type charts from previous generations.
 		internal static readonly Effect[,] Chart = new Effect[,]
 		{
 /*               NORMAL        FIGHT         FLYING        POISON        GROUND        ROCK          BUG           GHOST         STEEL         FIRE          WATER         GRASS         ELECTR        PSYCHC        ICE           DRAGON        DARK          FAIRY     */
