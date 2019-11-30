@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 
 namespace PokeTyper
 {
+	// TODO: Rename this class to "API".
 	public class PokeTyperMethods
 	{
 		public static PokemonType MakeType(params string[] types)

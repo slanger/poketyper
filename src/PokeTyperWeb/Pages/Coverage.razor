@@ -1,0 +1,101 @@
+@page "/coverage"
+
+<h3>Coverage</h3>
+
+<p>Figure out which types are "covered by", or weak to, a particular move set. For example, a fire-type move is super effective against ("covers") bug, steel, grass, and ice type Pokemon.</p>
+
+<p>Input up to four move types below and click "Get coverage".</p>
+
+<p>
+    <input placeholder="Move type 1" @bind="type1" />
+    <input placeholder="Move type 2" @bind="type2" />
+    <input placeholder="Move type 3" @bind="type3" />
+    <input placeholder="Move type 4" @bind="type4" />
+    <!-- TODO: Allow user to press enter to press button. -->
+    <button @onclick="GetCoverage">Get coverage</button>
+</p>
+
+@if (ranOnce)
+{
+    @if (coverage == null)
+    {
+        <!-- TODO: Display which type is invalid. -->
+        <p>Invalid type</p>
+    }
+    else
+    {
+        <h4>@coverage.Name</h4>
+        <h5>x1/4</h5>
+        <ul>
+            @foreach (var t in coverage.Effective025x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+        <h5>x1/2</h5>
+        <ul>
+            @foreach (var t in coverage.Effective05x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+        <h5>x1</h5>
+        <ul>
+            @foreach (var t in coverage.Effective1x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+        <h5>x2</h5>
+        <ul>
+            @foreach (var t in coverage.Effective2x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+        <h5>x4</h5>
+        <ul>
+            @foreach (var t in coverage.Effective4x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+        <h5>x0</h5>
+        <ul>
+            @foreach (var t in coverage.Effective0x)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    private string type1;
+    private string type2;
+    private string type3;
+    private string type4;
+    private PokeTyper.Coverage coverage;
+    private bool ranOnce;
+
+    private void GetCoverage()
+    {
+        ranOnce = true;
+        List<string> types = new List<string>(4);
+        foreach (var t in new string[] { type1, type2, type3, type4 })
+        {
+            if (!string.IsNullOrWhiteSpace(t))
+            {
+                types.Add(t);
+            }
+        }
+        try
+        {
+            coverage = PokeTyperMethods.MakeCoverage(types.ToArray());
+        }
+        catch (ArgumentException)
+        {
+            coverage = null;
+        }
+    }
+}
