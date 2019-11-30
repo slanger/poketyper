@@ -7,12 +7,18 @@
 <p>Input up to four move types below and click "Get coverage".</p>
 
 <p>
-    <!-- TODO: Add a drop-down listing the available Pokemon types. -->
-    <input placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" />
-    <input placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" />
-    <input placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" />
-    <input placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" />
     <button @onclick="GetCoverage">Get coverage</button>
+
+    <datalist id="types">
+        @foreach (TypeToken t in Enum.GetValues(typeof(TypeToken)))
+        {
+            <option value="@t.ToString()" />
+        }
+    </datalist>
 </p>
 
 @if (error != null)
@@ -21,6 +27,7 @@
 }
 else if (coverage != null)
 {
+    <!-- TODO: Change the below to use icons instead of text. -->
     <h4>@coverage.Name</h4>
     <h5>x1/4</h5>
     <ul>

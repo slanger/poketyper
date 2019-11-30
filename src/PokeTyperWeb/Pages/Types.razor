@@ -5,10 +5,16 @@
 <p>Learn more about any Pokemon type or type combination. Just input one or two types below and click "Make type".</p>
 
 <p>
-    <!-- TODO: Add a drop-down listing the available Pokemon types. -->
-    <input placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" />
-    <input placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" />
     <button @onclick="MakeType">Make type</button>
+
+    <datalist id="types">
+        @foreach (TypeToken t in Enum.GetValues(typeof(TypeToken)))
+        {
+            <option value="@t.ToString()" />
+        }
+    </datalist>
 </p>
 
 @if (error != null)
@@ -17,6 +23,7 @@
 }
 else if (typeInfo != null)
 {
+    <!-- TODO: Change the below to use icons instead of text. -->
     <h4>@typeInfo.Name</h4>
     <h5>x1/4</h5>
     <ul>
