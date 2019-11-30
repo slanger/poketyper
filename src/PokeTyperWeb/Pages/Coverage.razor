@@ -87,8 +87,7 @@
 
     private void GetCoverage()
     {
-        ranOnce = true;
-        List<string> types = new List<string>(4);
+        var types = new List<string>(4);
         foreach (var t in new string[] { type1, type2, type3, type4 })
         {
             if (!string.IsNullOrWhiteSpace(t))
@@ -96,6 +95,11 @@
                 types.Add(t);
             }
         }
+        if (types.Count == 0)
+        {
+            return;
+        }
+        ranOnce = true;
         try
         {
             coverage = PokeTyperMethods.MakeCoverage(types.ToArray());

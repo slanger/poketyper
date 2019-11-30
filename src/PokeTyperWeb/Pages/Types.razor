@@ -81,25 +81,22 @@
 
     private void MakeType()
     {
-        ranOnce = true;
-        // TODO: Allow type1 to be empty if type2 isn't.
-        if (string.IsNullOrWhiteSpace(type1))
+        var types = new List<string>(2);
+        foreach (var t in new string[] { type1, type2 })
         {
-            typeInfo = null;
+            if (!string.IsNullOrWhiteSpace(t))
+            {
+                types.Add(t);
+            }
+        }
+        if (types.Count == 0)
+        {
             return;
         }
-        string[] types;
-        if (string.IsNullOrWhiteSpace(type2))
-        {
-            types = new[] { type1 };
-        }
-        else
-        {
-            types = new[] { type1, type2 };
-        }
+        ranOnce = true;
         try
         {
-            typeInfo = PokeTyperMethods.MakeType(types);
+            typeInfo = PokeTyperMethods.MakeType(types.ToArray());
         }
         catch (ArgumentException)
         {
