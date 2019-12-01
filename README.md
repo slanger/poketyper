@@ -1,13 +1,31 @@
 # PokeTyper
 
-A console application that lets you find the weaknesses and resistances of any Pokemon type or
-combination of types, whether or not an actual Pokemon has that type. Currently, only the types and
-the type chart for the sixth generation of Pokemon games and onward are supported.
+[PokeTyper](https://slanger.github.io/PokeTyper/) is a Pokemon **fan-made** website where you can
+explore the different types and type combinations of Pokemon. You find the website at
+<https://slanger.github.io/PokeTyper/>.
 
-## How to run
+There are two pages in this website:
 
-1. Download and install .NET Core 3.0 or higher (https://dotnet.microsoft.com/download/dotnet-core).
-2. Download and extract the .zip file from the latest PokeTyper release in GitHub
-   (https://github.com/slanger/PokeTyper/releases).
-3. Open a command prompt or terminal, navigate to the directory where the .zip file was extracted,
-   and run "dotnet PokeTyper.dll".
+-   [Types](https://slanger.github.io/PokeTyper/types) - Tells you the resistances and weaknesses
+    of any Pokemon type or type combination.
+-   [Coverage](https://slanger.github.io/PokeTyper/coverage) - Tells you which types are "covered
+    by", or weak to, a particular Pokemon move set.
+
+## Code Structure
+
+The code is written in C# and uses [Blazor](http://blazor.net) with WebAssembly to run the code
+directly in the browser. The code is broken up into three projects:
+
+1. [PokeTyperWeb](src/PokeTyperWeb) - The code for the web app.
+
+2. [PokeTyperConsole](src/PokeTyperConsole) - The code for the console (terminal/command prompt)
+   app. This app is used for quick testing of the shared code.
+
+3. [PokeTyper](src/PokeTyper) - The code shared between the above projects. This code contains most
+   of the logic of working with Pokemon types.
+
+## How to build the code and run locally
+
+To build the code and run it locally, first install Visual Studio. Then, open up the
+[Visual Studio solution file](src/PokeTyper.sln) and click the run button on the project you want
+to run (either the [web app](src/PokeTyperWeb) or the [console app](src/PokeTyperConsole)).
