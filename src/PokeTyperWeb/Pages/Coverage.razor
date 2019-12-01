@@ -7,10 +7,10 @@
 <p>Input up to four move types below and click "Get coverage".</p>
 
 <p>
-    <input list="types" placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" />
-    <input list="types" placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" />
-    <input list="types" placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" />
-    <input list="types" placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <input list="types" placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <input list="types" placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <input list="types" placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" onfocus="this.value=''" />
     <button @onclick="GetCoverage">Get coverage</button>
 
     <datalist id="types">

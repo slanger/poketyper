@@ -5,8 +5,8 @@
 <p>Learn more about any Pokemon type or type combination. Just input one or two types below and click "Make type".</p>
 
 <p>
-    <input list="types" placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" />
-    <input list="types" placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" />
+    <input list="types" placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <input list="types" placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
     <button @onclick="MakeType">Make type</button>
 
     <datalist id="types">
