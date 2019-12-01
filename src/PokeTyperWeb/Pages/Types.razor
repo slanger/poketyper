@@ -33,45 +33,47 @@
 else if (typeInfo != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
-    <h4>@typeInfo.Name</h4>
-    <h5>x1/4</h5>
-    <ul>
-        @foreach (var t in typeInfo.Resist4x)
-        {
-            <li>@t.ToString()</li>
-        }
-    </ul>
-    <h5>x1/2</h5>
+    <h4><b>@typeInfo.Name Type</b></h4>
+    <h5><b>Resistances</b></h5>
+    <h6>Resist 2x</h6>
     <ul>
         @foreach (var t in typeInfo.Resist2x)
         {
             <li>@t.ToString()</li>
         }
     </ul>
-    <h5>x1</h5>
+    <h6>Resist 4x</h6>
     <ul>
-        @foreach (var t in typeInfo.Normal)
+        @foreach (var t in typeInfo.Resist4x)
         {
             <li>@t.ToString()</li>
         }
     </ul>
-    <h5>x2</h5>
+    <h6>Immune (0x)</h6>
+    <ul>
+        @foreach (var t in typeInfo.Immune)
+        {
+            <li>@t.ToString()</li>
+        }
+    </ul>
+    <h5><b>Weaknesses</b></h5>
+    <h6>Weak To 2x</h6>
     <ul>
         @foreach (var t in typeInfo.WeakTo2x)
         {
             <li>@t.ToString()</li>
         }
     </ul>
-    <h5>x4</h5>
+    <h6>Weak To 4x</h6>
     <ul>
         @foreach (var t in typeInfo.WeakTo4x)
         {
             <li>@t.ToString()</li>
         }
     </ul>
-    <h5>x0</h5>
+    <h5><b>Normal Damage (1x)</b></h5>
     <ul>
-        @foreach (var t in typeInfo.Immune)
+        @foreach (var t in typeInfo.Normal)
         {
             <li>@t.ToString()</li>
         }

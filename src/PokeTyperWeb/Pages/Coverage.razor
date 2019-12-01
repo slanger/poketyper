@@ -37,45 +37,47 @@
 else if (coverage != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
-    <h4>@coverage.Name</h4>
-    <h5>x1/4</h5>
-    <ul>
-        @foreach (var t in coverage.Effective025x)
-        {
-            <li>@t.Name</li>
-        }
-    </ul>
-    <h5>x1/2</h5>
-    <ul>
-        @foreach (var t in coverage.Effective05x)
-        {
-            <li>@t.Name</li>
-        }
-    </ul>
-    <h5>x1</h5>
-    <ul>
-        @foreach (var t in coverage.Effective1x)
-        {
-            <li>@t.Name</li>
-        }
-    </ul>
-    <h5>x2</h5>
+    <h4><b>@coverage.Name Coverage</b></h4>
+    <h5><b>Super Effective</b></h5>
+    <h6>2x Effectiveness</h6>
     <ul>
         @foreach (var t in coverage.Effective2x)
         {
             <li>@t.Name</li>
         }
     </ul>
-    <h5>x4</h5>
+    <h6>4x Effectiveness</h6>
     <ul>
         @foreach (var t in coverage.Effective4x)
         {
             <li>@t.Name</li>
         }
     </ul>
-    <h5>x0</h5>
+    <h5><b>Not Very Effective</b></h5>
+    <h6>1/2x Effectiveness</h6>
+    <ul>
+        @foreach (var t in coverage.Effective05x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h6>1/4x Effectiveness</h6>
+    <ul>
+        @foreach (var t in coverage.Effective025x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h6>0x Effectiveness</h6>
     <ul>
         @foreach (var t in coverage.Effective0x)
+        {
+            <li>@t.Name</li>
+        }
+    </ul>
+    <h5><b>Normal Effectiveness (1x)</b></h5>
+    <ul>
+        @foreach (var t in coverage.Effective1x)
         {
             <li>@t.Name</li>
         }
