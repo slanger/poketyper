@@ -8,11 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokerTyperConsole", "PokerTyperConsole\PokerTyperConsole.csproj", "{259B1769-CFB8-43C2-8D14-276EC14067E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeTyperConsole", "PokeTyperConsole\PokeTyperConsole.csproj", "{259B1769-CFB8-43C2-8D14-276EC14067E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeTyper", "PokeTyper\PokeTyper.csproj", "{1C527B98-462E-4F3E-8001-CA2B4A8851BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeTyperWeb", "PokeTyperWeb\PokeTyperWeb.csproj", "{6CE5CC96-971C-485E-B4BB-D50AF9623246}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeTyperWeb", "PokeTyperWeb\PokeTyperWeb.csproj", "{6CE5CC96-971C-485E-B4BB-D50AF9623246}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
