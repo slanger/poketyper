@@ -94,25 +94,37 @@ else if (typeInfo != null)
         }
     }
 
+    private bool TryConvertInput(ref string input, ref List<TypeToken> types)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            // Clear the textbox.
+            input = string.Empty;
+            return true;
+        }
+        input = input.Trim();
+        TypeToken t;
+        if (!API.TryConvertStringToType(input, out t))
+        {
+            error = "Invalid type: \"" + input + "\"";
+            return false;
+        }
+        types.Add(t);
+        // Make the value in the textbox matches the type's actual value, e.g. make sure it starts
+        // with a capital letter, etc.
+        input = t.ToString();
+        return true;
+    }
+
     private void MakeType()
     {
         typeInfo = null;
         error = null;
         var types = new List<TypeToken>(2);
-        foreach (var type in new string[] { type1, type2 })
-        {
-            if (!string.IsNullOrWhiteSpace(type))
-            {
-                TypeToken t;
-                if (!API.TryConvertStringToType(type, out t))
-                {
-                    error = "Invalid type: \"" + type + "\"";
-                    return;
-                }
-                types.Add(t);
-            }
-        }
-        if (types.Count == 0)
+        bool succeeded = true;
+        succeeded &= TryConvertInput(ref type1, ref types);
+        succeeded &= TryConvertInput(ref type2, ref types);
+        if (!succeeded || types.Count == 0)
         {
             return;
         }
