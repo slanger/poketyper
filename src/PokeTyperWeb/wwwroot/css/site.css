@@ -8,6 +8,10 @@ a, .btn-link {
     color: #0366d6;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -135,6 +139,13 @@ app {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.flex-grid {
+  display: flex;
+}
+.col {
+  flex: 1;
+}
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
