@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:65035/PokeTyper/",
+      "applicationUrl": "http://localhost:65035/",
       "sslPort": 0
     }
   },
