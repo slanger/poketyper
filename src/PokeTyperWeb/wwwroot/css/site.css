@@ -9,7 +9,7 @@ a, .btn-link {
 }
 
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .btn-primary {
@@ -141,10 +141,11 @@ app {
     }
 
 .flex-grid {
-  display: flex;
+    display: flex;
 }
+
 .col {
-  flex: 1;
+    flex: 1;
 }
 
 @media (max-width: 767.98px) {
