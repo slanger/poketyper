@@ -1,8 +1,8 @@
 # PokeTyper
 
-[PokeTyper](https://slanger.github.io/PokeTyper/) is a Pokemon **fan-made** website where you can
+[PokeTyper](https://slanger.github.io/poketyper/) is a Pokemon **fan-made** website where you can
 explore the different types and type combinations of Pokemon. You find the website at
-<https://slanger.github.io/PokeTyper/>
+<https://slanger.github.io/poketyper/>
 
 There are two pages in this website:
 
