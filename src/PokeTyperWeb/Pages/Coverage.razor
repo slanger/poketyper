@@ -11,7 +11,6 @@
     <input list="types" placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
     <input list="types" placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" onfocus="this.value=''" />
     <input list="types" placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <button @onclick="GetCoverage">Get coverage</button>
 
     <datalist id="types">
         @{
@@ -29,6 +28,8 @@
         }
     </datalist>
 </p>
+
+<p><button @onclick="GetCoverage">Get coverage</button></p>
 
 @if (error != null)
 {

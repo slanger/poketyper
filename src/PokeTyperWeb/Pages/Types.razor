@@ -7,7 +7,6 @@
 <p>
     <input list="types" placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
     <input list="types" placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <button @onclick="MakeType">Make type</button>
 
     <datalist id="types">
         @{
@@ -25,6 +24,8 @@
         }
     </datalist>
 </p>
+
+<p><button @onclick="MakeType">Make type</button></p>
 
 @if (error != null)
 {
