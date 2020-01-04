@@ -39,7 +39,7 @@ else if (typeInfo != null)
     <div class="flex-grid">
         <div class="col">
             <h6>Resist 2x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Resist2x)
                 {
                     <li>@t.ToString()</li>
@@ -48,7 +48,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Resist 4x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Resist4x)
                 {
                     <li>@t.ToString()</li>
@@ -57,7 +57,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Immune (0x)</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Immune)
                 {
                     <li>@t.ToString()</li>
@@ -69,7 +69,7 @@ else if (typeInfo != null)
     <div class="flex-grid">
         <div class="col">
             <h6>Weak To 2x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.WeakTo2x)
                 {
                     <li>@t.ToString()</li>
@@ -78,7 +78,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Weak To 4x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.WeakTo4x)
                 {
                     <li>@t.ToString()</li>
@@ -89,7 +89,7 @@ else if (typeInfo != null)
         </div>
     </div>
     <h5><b>Normal Damage (1x)</b></h5>
-    <ul>
+    <ul class="ul-nostyle">
         @foreach (var t in typeInfo.Normal)
         {
             <li>@t.ToString()</li>

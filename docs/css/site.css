@@ -144,6 +144,10 @@ app {
     flex: 1;
 }
 
+.ul-nostyle {
+    list-style-type: none;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

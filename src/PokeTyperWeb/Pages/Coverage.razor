@@ -43,7 +43,7 @@ else if (coverage != null)
     <div class="flex-grid">
         <div class="col">
             <h6>1/2x Effectiveness</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in coverage.Effective05x)
                 {
                     <li>@t.Name</li>
@@ -52,7 +52,7 @@ else if (coverage != null)
         </div>
         <div class="col">
             <h6>1/4x Effectiveness</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in coverage.Effective025x)
                 {
                     <li>@t.Name</li>
@@ -61,7 +61,7 @@ else if (coverage != null)
         </div>
         <div class="col">
             <h6>0x Effectiveness</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in coverage.Effective0x)
                 {
                     <li>@t.Name</li>
@@ -73,7 +73,7 @@ else if (coverage != null)
     <div class="flex-grid">
         <div class="col">
             <h6>2x Effectiveness</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in coverage.Effective2x)
                 {
                     <li>@t.Name</li>
@@ -82,7 +82,7 @@ else if (coverage != null)
         </div>
         <div class="col">
             <h6>4x Effectiveness</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in coverage.Effective4x)
                 {
                     <li>@t.Name</li>
@@ -93,7 +93,7 @@ else if (coverage != null)
         </div>
     </div>
     <h5><b>Normal Effectiveness (1x)</b></h5>
-    <ul>
+    <ul class="ul-nostyle">
         @foreach (var t in coverage.Effective1x)
         {
             <li>@t.Name</li>
