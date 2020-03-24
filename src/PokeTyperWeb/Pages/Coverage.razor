@@ -2,15 +2,19 @@
 
 <h3>Coverage</h3>
 
-<p>Figure out which types are "covered by", or weak to, a particular Pokemon move set. For example, a fire-type move is super effective against ("covers") bug, steel, grass, and ice type Pokemon.</p>
+<p>
+    Learn which types are "covered by", or weak to, a particular Pokemon move set. For example, a
+    fire-type move is super effective against ("covers") bug, steel, grass, and ice type Pokemon.
+</p>
 
-<p>Input up to four move types below and click "Get coverage".</p>
+<p>Enter up to four move types below.</p>
 
 <p>
-    <input list="types" placeholder="Move type 1" @bind="type1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <input list="types" placeholder="Move type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <input list="types" placeholder="Move type 3" @bind="type3" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <input list="types" placeholder="Move type 4" @bind="type4" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <!-- TODO: Get rid of the dropdown arrow in the input boxes. -->
+    <input type="search" list="types" placeholder="Move type 1" @onchange="OnChange1" onfocus="this.value=''" />
+    <input type="search" list="types" placeholder="Move type 2" @onchange="OnChange2" onfocus="this.value=''" />
+    <input type="search" list="types" placeholder="Move type 3" @onchange="OnChange3" onfocus="this.value=''" />
+    <input type="search" list="types" placeholder="Move type 4" @onchange="OnChange4" onfocus="this.value=''" />
 
     <datalist id="types">
         @{
@@ -29,13 +33,7 @@
     </datalist>
 </p>
 
-<p><button @onclick="GetCoverage">Get coverage</button></p>
-
-@if (error != null)
-{
-    <p>Error: @error</p>
-}
-else if (coverage != null)
+@if (coverage != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
     <h4><b>@coverage.Name Coverage</b></h4>
@@ -107,52 +105,59 @@ else if (coverage != null)
     private string type3;
     private string type4;
     private PokeTyper.Coverage coverage;
-    private string error;
 
-    private void OnKeyUp(KeyboardEventArgs args)
+    private void OnChange1(ChangeEventArgs args)
     {
-        if (args.Key == "Enter")
-        {
-            GetCoverage();
-        }
+        type1 = (string)args.Value;
+        coverage = GetCoverage();
     }
 
-    private bool TryConvertInput(ref string input, ref List<TypeToken> types)
+    private void OnChange2(ChangeEventArgs args)
+    {
+        type2 = (string)args.Value;
+        coverage = GetCoverage();
+    }
+
+    private void OnChange3(ChangeEventArgs args)
+    {
+        type3 = (string)args.Value;
+        coverage = GetCoverage();
+    }
+
+    private void OnChange4(ChangeEventArgs args)
+    {
+        type4 = (string)args.Value;
+        coverage = GetCoverage();
+    }
+
+    private PokeTyper.Coverage GetCoverage()
+    {
+        var types = new List<TypeToken>(4);
+        bool succeeded = true;
+        succeeded &= TryConvertInput(type1, ref types);
+        succeeded &= TryConvertInput(type2, ref types);
+        succeeded &= TryConvertInput(type3, ref types);
+        succeeded &= TryConvertInput(type4, ref types);
+        if (!succeeded || types.Count == 0)
+        {
+            return null;
+        }
+        return API.MakeCoverage(types.ToArray());
+    }
+
+    private bool TryConvertInput(string input, ref List<TypeToken> types)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
-            // Clear the textbox.
-            input = string.Empty;
             return true;
         }
         input = input.Trim();
         TypeToken t;
         if (!API.TryConvertStringToType(input, out t))
         {
-            error = "Invalid type: \"" + input + "\"";
             return false;
         }
         types.Add(t);
-        // Make the value in the textbox matches the type's actual value, e.g. make sure it starts
-        // with a capital letter, etc.
-        input = t.ToString();
         return true;
-    }
-
-    private void GetCoverage()
-    {
-        coverage = null;
-        error = null;
-        var types = new List<TypeToken>(4);
-        bool succeeded = true;
-        succeeded &= TryConvertInput(ref type1, ref types);
-        succeeded &= TryConvertInput(ref type2, ref types);
-        succeeded &= TryConvertInput(ref type3, ref types);
-        succeeded &= TryConvertInput(ref type4, ref types);
-        if (!succeeded || types.Count == 0)
-        {
-            return;
-        }
-        coverage = API.MakeCoverage(types.ToArray());
     }
 }

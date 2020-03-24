@@ -2,11 +2,15 @@
 
 <h3>Types</h3>
 
-<p>Learn more about any Pokemon type or type combination. Just input one or two types below and click "Make type".</p>
+<p>
+    Learn about the resistances and weaknesses of any Pokemon type or type combination. Just enter
+    one or two types below.
+</p>
 
 <p>
-    <input list="types" placeholder="Type 1" @bind="type1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <input list="types" placeholder="Type 2" @bind="type2" @onkeyup="OnKeyUp" onfocus="this.value=''" />
+    <!-- TODO: Get rid of the dropdown arrow in the input boxes. -->
+    <input type="search" list="types" placeholder="Type 1" @onchange="OnChange1" onfocus="this.value=''" />
+    <input type="search" list="types" placeholder="Type 2" @onchange="OnChange2" onfocus="this.value=''" />
 
     <datalist id="types">
         @{
@@ -25,13 +29,7 @@
     </datalist>
 </p>
 
-<p><button @onclick="MakeType">Make type</button></p>
-
-@if (error != null)
-{
-    <p>Error: @error</p>
-}
-else if (typeInfo != null)
+@if (typeInfo != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
     <h4><b>@typeInfo.Name Type</b></h4>
@@ -101,50 +99,45 @@ else if (typeInfo != null)
     private string type1;
     private string type2;
     private PokemonType typeInfo;
-    private string error;
 
-    private void OnKeyUp(KeyboardEventArgs args)
+    private void OnChange1(ChangeEventArgs args)
     {
-        if (args.Key == "Enter")
-        {
-            MakeType();
-        }
+        type1 = (string)args.Value;
+        typeInfo = GetPokemonType();
     }
 
-    private bool TryConvertInput(ref string input, ref List<TypeToken> types)
+    private void OnChange2(ChangeEventArgs args)
+    {
+        type2 = (string)args.Value;
+        typeInfo = GetPokemonType();
+    }
+
+    private PokemonType GetPokemonType()
+    {
+        var types = new List<TypeToken>(2);
+        bool succeeded = true;
+        succeeded &= TryConvertInput(type1, ref types);
+        succeeded &= TryConvertInput(type2, ref types);
+        if (!succeeded || types.Count == 0)
+        {
+            return null;
+        }
+        return API.MakeType(types.ToArray());
+    }
+
+    private bool TryConvertInput(string input, ref List<TypeToken> types)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
-            // Clear the textbox.
-            input = string.Empty;
             return true;
         }
         input = input.Trim();
         TypeToken t;
         if (!API.TryConvertStringToType(input, out t))
         {
-            error = "Invalid type: \"" + input + "\"";
             return false;
         }
         types.Add(t);
-        // Make the value in the textbox matches the type's actual value, e.g. make sure it starts
-        // with a capital letter, etc.
-        input = t.ToString();
         return true;
-    }
-
-    private void MakeType()
-    {
-        typeInfo = null;
-        error = null;
-        var types = new List<TypeToken>(2);
-        bool succeeded = true;
-        succeeded &= TryConvertInput(ref type1, ref types);
-        succeeded &= TryConvertInput(ref type2, ref types);
-        if (!succeeded || types.Count == 0)
-        {
-            return;
-        }
-        typeInfo = API.MakeType(types.ToArray());
     }
 }
