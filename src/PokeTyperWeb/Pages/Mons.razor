@@ -5,9 +5,8 @@
 <p>Enter a Pokémon</p>
 
 <p>
-    <input list="mons" placeholder="Which Pokemon?" @bind="mon1" @onkeyup="OnKeyUp" onfocus="this.value=''" />
-    <button @onclick="ShowSpread">Show Weakness/Strength</button>
-
+    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnKeyUp" onfocus="this.value=''" />
+        
     <datalist id="mons">
         @{
             Array tokens = Enum.GetValues(typeof(PokeToken));
