@@ -1,22 +1,21 @@
-@page "/mons"
+@page "/types"
 
-<h3>Mons</h3>
-
-<p>Enter a Pokémon</p>
+<h3>Types</h3>
 
 <p>
-    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnChange1" onfocus="this.value=''" />
-        
+    Learn about the resistances and weaknesses of any Pokemon type or type combination. Just enter
+    one or two types below.
+</p>
+
+<p>
+    <!-- TODO: Get rid of the dropdown arrow in the input boxes. -->
+    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnChange" onfocus="this.value=''" />
+
     <datalist id="mons">
         @{
-            Array tokens = Enum.GetValues(typeof(PokeToken));
-            var names = new List<string>(tokens.Length);
-            foreach (PokeToken t in tokens)
-            {
-                names.Add(t.ToString());
-            }
-            names.Sort();
-            foreach (string n in names)
+            var mons = new List<string>(pokedex.Keys);
+            mons.Sort();
+            foreach (string n in mons)
             {
                 <option value="@n" />
             }
@@ -24,11 +23,7 @@
     </datalist>
 </p>
 
-@if (error != null)
-{
-    <p>Error: @error</p>
-}
-else if (typeInfo != null)
+@if (typeInfo != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
     <h4><b>@typeInfo.Name Type</b></h4>
@@ -36,7 +31,7 @@ else if (typeInfo != null)
     <div class="flex-grid">
         <div class="col">
             <h6>Resist 2x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Resist2x)
                 {
                     <li>@t.ToString()</li>
@@ -45,7 +40,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Resist 4x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Resist4x)
                 {
                     <li>@t.ToString()</li>
@@ -54,7 +49,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Immune (0x)</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.Immune)
                 {
                     <li>@t.ToString()</li>
@@ -66,7 +61,7 @@ else if (typeInfo != null)
     <div class="flex-grid">
         <div class="col">
             <h6>Weak To 2x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.WeakTo2x)
                 {
                     <li>@t.ToString()</li>
@@ -75,7 +70,7 @@ else if (typeInfo != null)
         </div>
         <div class="col">
             <h6>Weak To 4x</h6>
-            <ul>
+            <ul class="ul-nostyle">
                 @foreach (var t in typeInfo.WeakTo4x)
                 {
                     <li>@t.ToString()</li>
@@ -86,7 +81,7 @@ else if (typeInfo != null)
         </div>
     </div>
     <h5><b>Normal Damage (1x)</b></h5>
-    <ul>
+    <ul class="ul-nostyle">
         @foreach (var t in typeInfo.Normal)
         {
             <li>@t.ToString()</li>
@@ -95,218 +90,178 @@ else if (typeInfo != null)
 }
 
 @code {
-    private string mon1;
     private PokemonType typeInfo;
-    private string error;
+    IDictionary<string, string[]> pokedex = new Dictionary<string, string[]>()
+          {
+            {"Bulbasaur",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Ivysaur",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Venusaur",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Charmander",TypeToken[]{TypeToken.Fire}},
+            {"Charmeleon",TypeToken[]{TypeToken.Fire}},
+            {"Charizard",TypeToken[]{TypeToken.Fire, TypeToken.Flying}},
+            {"Squirtle",TypeToken[]{TypeToken.Water}},
+            {"Wartortle",TypeToken[]{TypeToken.Water}},
+            {"Blastoise",TypeToken[]{TypeToken.Water}},
+            {"Caterpie",TypeToken[]{TypeToken.Bug}},
+            {"Metapod",TypeToken[]{TypeToken.Bug}},
+            {"Butterfree",TypeToken[]{TypeToken.Bug, TypeToken.Flying}},
+            {"Weedle",TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
+            {"Kakuna",TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
+            {"Beedrill",TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
+            {"Pidgey",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Pidgeotto",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Pidgeot",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Rattata",TypeToken[]{TypeToken.Normal}},
+            {"Raticate",TypeToken[]{TypeToken.Normal}},
+            {"Spearow",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Fearow",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Ekans",TypeToken[]{TypeToken.Poison}},
+            {"Arbok",TypeToken[]{TypeToken.Poison}},
+            {"Pikachu",TypeToken[]{TypeToken.Electric}},
+            {"Raichu",TypeToken[]{TypeToken.Electric}},
+            {"Sandshrew",TypeToken[]{TypeToken.Ground}},
+            {"Sandslash",TypeToken[]{TypeToken.Ground}},
+            {"Nidoran♀",TypeToken[]{TypeToken.Poison}},
+            {"Nidorina",TypeToken[]{TypeToken.Poison}},
+            {"Nidoqueen",TypeToken[]{TypeToken.Poison,TypeToken.Ground}},
+            {"Nidoran♂",TypeToken[]{TypeToken.Poison}},
+            {"Nidorino",TypeToken[]{TypeToken.Poison}},
+            {"Nidoking",TypeToken[]{TypeToken.Poison, TypeToken.Ground}},
+            {"Clefairy",TypeToken[]{TypeToken.Fairy}},
+            {"Clefable",TypeToken[]{TypeToken.Fairy}},
+            {"Vulpix",TypeToken[]{TypeToken.Fire}},
+            {"Ninetales",TypeToken[]{TypeToken.Fire}},
+            {"Jigglypuff",TypeToken[]{TypeToken.Normal, TypeToken.Fairy}},
+            {"Wigglytuff",TypeToken[]{TypeToken.Normal, TypeToken.Fairy}},
+            {"Zubat",TypeToken[]{TypeToken.Poison, TypeToken.Flying}},
+            {"Golbat",TypeToken[]{TypeToken.Poison, TypeToken.Flying}},
+            {"Oddish",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Gloom",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Vileplume",TypeToken[]{TypeToken.Grass", TypeToken.Poison}},
+            {"Paras",TypeToken[]{TypeToken.Bug, TypeToken.Grass}},
+            {"Parasect",TypeToken[]{TypeToken.Bug, TypeToken.Grass}},
+            {"Venonat",TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
+            {"Venomoth",TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
+            {"Diglett",TypeToken[]{TypeToken.Ground}},
+            {"Dugtrio",TypeToken[]{TypeToken.Ground}},
+            {"Meowth",TypeToken[]{TypeToken.Normal}},
+            {"Persian",TypeToken[]{TypeToken.Normal}},
+            {"Psyduck",TypeToken[]{TypeToken.Water}},
+            {"Golduck",TypeToken[]{TypeToken.Water}},
+            {"Mankey",TypeToken[]{TypeToken.Fighting}},
+            {"Primeape",TypeToken[]{TypeToken.Fighting}},
+            {"Growlithe",TypeToken[]{TypeToken.Fire}},
+            {"Arcanine",TypeToken[]{TypeToken.Fire}},
+            {"Poliwag",TypeToken[]{TypeToken.Water}},
+            {"Poliwhirl",TypeToken[]{TypeToken.Water}},
+            {"Poliwrath",TypeToken[]{TypeToken.Water, TypeToken.Fighting}},
+            {"Abra",TypeToken[]{TypeToken.Psychic}},
+            {"Kadabra",TypeToken[]{TypeToken.Psychic}},
+            {"Alakazam",TypeToken[]{TypeToken.Psychic}},
+            {"Machop",TypeToken[]{TypeToken.Fighting}},
+            {"Machoke",TypeToken[]{TypeToken.Fighting}},
+            {"Machamp",TypeToken[]{TypeToken.Fighting}},
+            {"Bellsprout",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Weepinbell",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Victreebel",TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
+            {"Tentacool",TypeToken[]{TypeToken.Water, TypeToken.Poison}},
+            {"Tentacruel",TypeToken[]{TypeToken.Water, TypeToken.Poison}},
+            {"Geodude",TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
+            {"Graveler",TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
+            {"Golem",TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
+            {"Ponyta",TypeToken[]{TypeToken.Fire}},
+            {"Rapidash",TypeToken[]{TypeToken.Fire}},
+            {"Slowpoke",TypeToken[]{TypeToken.Water, TypeToken.Psychic}},
+            {"Slowbro",TypeToken[]{TypeToken.Water, TypeToken.Psychic}},
+            {"Magnemite",TypeToken[]{TypeToken.Electric, TypeToken.Steel}},
+            {"Magneton",TypeToken[]{TypeToken.Electric, TypeToken.Steel}},
+            {"Farfetch'd",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Doduo",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Dodrio",TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
+            {"Seel",TypeToken[]{TypeToken.Water}},
+            {"Dewgong",TypeToken[]{TypeToken.Water, TypeToken.Ice}},
+            {"Grimer",TypeToken[]{TypeToken.Poison}},
+            {"Muk",TypeToken[]{TypeToken.Poison}},
+            {"Muk - Alolan",TypeToken[]{TypeToken.Poison, TypeToken.Dark}},
+            {"Shellder",TypeToken[]{TypeToken.Water}},
+            {"Cloyster",TypeToken[]{TypeToken.Water, TypeToken.Ice}},
+            {"Gastly",TypeToken[]{TypeToken.Ghost, TypeToken.Poison}},
+            {"Haunter",TypeToken[]{TypeToken.Ghost, TypeToken.Poison}},
+            {"Gengar",TypeToken[]{TypeToken.Ghost, TypeToken.Poison}},
+            {"Onix",TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
+            {"Drowzee",TypeToken[]{TypeToken.Psychic}},
+            {"Hypno",TypeToken[]{TypeToken.Psychic}},
+            {"Krabby",TypeToken[]{TypeToken.Water}},
+            {"Kingler",TypeToken[]{TypeToken.Water}},
+            {"Voltorb",TypeToken[]{TypeToken.Electric}},
+            {"Electrode",TypeToken[]{TypeToken.Electric}},
+            {"Exeggcute",TypeToken[]{TypeToken.Grass, TypeToken.Psychic}},
+            {"Exeggutor",TypeToken[]{TypeToken.Grass, TypeToken.Psychic}},
+            {"Cubone",TypeToken[]{TypeToken.Ground}},
+            {"Marowak",TypeToken[]{TypeToken.Ground}},
+            {"Hitmonlee",TypeToken[]{TypeToken.Fighting}},
+            {"Hitmonchan",TypeToken[]{TypeToken.Fighting}},
+            {"Lickitung",TypeToken[]{TypeToken.Normal}},
+            {"Koffing",TypeToken[]{TypeToken.Poison}},
+            {"Weezing",TypeToken[]{TypeToken.Poison}},
+            {"Rhyhorn",TypeToken[]{TypeToken.Ground, TypeToken.Rock}},
+            {"Rhydon",TypeToken[]{TypeToken.Ground, TypeToken.Rock}},
+            {"Chansey",TypeToken[]{TypeToken.Normal}},
+            {"Tangela",TypeToken[]{TypeToken.Grass}},
+            {"Kangaskhan",TypeToken[]{TypeToken.Normal}},
+            {"Horsea",TypeToken[]{TypeToken.Water}},
+            {"Seadra",TypeToken[]{TypeToken.Water}},
+            {"Goldeen",TypeToken[]{TypeToken.Water}},
+            {"Seaking",TypeToken[]{TypeToken.Water}},
+            {"Staryu",TypeToken[]{TypeToken.Water}},
+            {"Starmie",TypeToken[]{TypeToken.Water, TypeToken.Psychic}},
+            {"Mr. Mime",TypeToken[]{TypeToken.Psychic, TypeToken.Fairy}},
+            {"Scyther",TypeToken[]{TypeToken.Bug, TypeToken.Flying}},
+            {"Jynx",TypeToken[]{TypeToken.Ice, TypeToken.Psychic}},
+            {"Electabuzz",TypeToken[]{TypeToken.Electric}},
+            {"Magmar",TypeToken[]{TypeToken.Fire}},
+            {"Pinsir",TypeToken[]{TypeToken.Bug}},
+            {"Tauros",TypeToken[]{TypeToken.Normal}},
+            {"Magikarp",TypeToken[]{TypeToken.Water}},
+            {"Gyarados",TypeToken[]{TypeToken.Water, TypeToken.Flying}},
+            {"Lapras",TypeToken[]{TypeToken.Water, TypeToken.Ice}},
+            {"Ditto",TypeToken[]{TypeToken.Normal}},
+            {"Eevee",TypeToken[]{TypeToken.Normal}},
+            {"Vaporeon",TypeToken[]{TypeToken.Water}},
+            {"Jolteon",TypeToken[]{TypeToken.Electric}},
+            {"Flareon",TypeToken[]{TypeToken.Fire}},
+            {"Porygon",TypeToken[]{TypeToken.Normal}},
+            {"Omanyte",TypeToken[]{TypeToken.Rock, TypeToken.Water}},
+            {"Omastar",TypeToken[]{TypeToken.Rock, TypeToken.Water}},
+            {"Kabuto",TypeToken[]{TypeToken.Rock, TypeToken.Water}},
+            {"Kabutops",TypeToken[]{TypeToken.Rock, TypeToken.Water}},
+            {"Aerodactyl",TypeToken[]{TypeToken.Rock, TypeToken.Flying}},
+            {"Snorlax",TypeToken[]{TypeToken.Normal}},
+            {"Articuno",TypeToken[]{TypeToken.Ice, TypeToken.Flying}},
+            {"Zapdos",TypeToken[]{TypeToken.Electric, TypeToken.Flying}},
+            {"Moltres",TypeToken[]{TypeToken.Fire, TypeToken.Flying}},
+            {"Dratini",TypeToken[]{TypeToken.Dragon}},
+            {"Dragonair",TypeToken[]{TypeToken.Dragon}},
+            {"Dragonite",TypeToken[]{TypeToken.Dragon, TypeToken.Flying}},
+            {"Mewtwo",TypeToken[]{TypeToken.Psychic}},
+          };
 
-    private void OnChange1(ChangeEventArgs args)
+    private void OnChange(ChangeEventArgs args)
     {
-        type1 = (string)args.Value;
-        typeInfo = GetPokemonType();
-    }
-    
-    private PokemonType GetPokemonType()
-    {
-        var types = new List<TypeToken>(2);
-        bool succeeded = true;
-        succeeded &= TryConvertInput(type1, ref types);
-        succeeded &= TryConvertInput(type2, ref types);
-        if (!succeeded || types.Count == 0)
-        {
-            return null;
+        string pokemon = (string)args.Value;
+        pokemon = pokemon.Trim();
+        if (!InputErrorCheck(pokemon)) {
+            return;
         }
-        return API.MakeType(types.ToArray());
+        typeInfo = API.MakeType(pokedex[pokemon]);
     }
 
-    private bool TryConvertInput(ref string input, ref List<TypeToken> types)
+    private bool InputErrorCheck(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
-            // Clear the textbox.
-            input = string.Empty;
-            return true;
-        }
-        input = input.Trim();
-        TypeToken t;
-        if (!API.TryConvertStringToType(input, out t))
-        {
-            error = "Invalid type: \"" + input + "\"";
             return false;
         }
-        types.Add(t);
-        // Make the value in the textbox matches the type's actual value, e.g. make sure it starts
-        // with a capital letter, etc.
-        input = t.ToString();
-        return true;
-    }
-
-    private void MakeType()
-    {
-        typeInfo = null;
-        error = null;
-        var types = new List<TypeToken>(2);
-        bool succeeded = true;
-        IDictionary<string, string[]> pokedex = new Dictionary<string, string[]>()
-          {
-            {"Bulbasaur",new string[]{"Grass", "Poison"}},
-            {"Ivysaur",new string[]{"Grass", "Poison"}},
-            {"Venusaur",new string[]{"Grass", "Poison"}},
-            {"Charmander",new string[]{"Fire"}},
-            {"Charmeleon",new string[]{"Fire"}},
-            {"Charizard",new string[]{"Fire", "Flying"}},
-            {"Squirtle",new string[]{"Water"}},
-            {"Wartortle",new string[]{"Water"}},
-            {"Blastoise",new string[]{"Water"}},
-            {"Caterpie",new string[]{"Bug"}},
-            {"Metapod",new string[]{"Bug"}},
-            {"Butterfree",new string[]{"Bug", "Flying"}},
-            {"Weedle",new string[]{"Bug", "Poison"}},
-            {"Kakuna",new string[]{"Bug", "Poison"}},
-            {"Beedrill",new string[]{"Bug", "Poison"}},
-            {"Pidgey",new string[]{"Normal", "Flying"}},
-            {"Pidgeotto",new string[]{"Normal", "Flying"}},
-            {"Pidgeot",new string[]{"Normal", "Flying"}},
-            {"Rattata",new string[]{"Normal"}},
-            {"Raticate",new string[]{"Normal"}},
-            {"Spearow",new string[]{"Normal", "Flying"}},
-            {"Fearow",new string[]{"Normal", "Flying"}},
-            {"Ekans",new string[]{"Poison"}},
-            {"Arbok",new string[]{"Poison"}},
-            {"Pikachu",new string[]{"Electric"}},
-            {"Raichu",new string[]{"Electric"}},
-            {"Sandshrew",new string[]{"Ground"}},
-            {"Sandslash",new string[]{"Ground"}},
-            {"Nidoran♀",new string[]{"Poison"}},
-            {"Nidorina",new string[]{"Poison"}},
-            {"Nidoqueen",new string[]{"Poison","Ground"}},
-            {"Nidoran♂",new string[]{"Poison"}},
-            {"Nidorino",new string[]{"Poison"}},
-            {"Nidoking",new string[]{"Poison", "Ground"}},
-            {"Clefairy",new string[]{"Fairy"}},
-            {"Clefable",new string[]{"Fairy"}},
-            {"Vulpix",new string[]{"Fire"}},
-            {"Ninetales",new string[]{"Fire"}},
-            {"Jigglypuff",new string[]{"Normal", "Fairy"}},
-            {"Wigglytuff",new string[]{"Normal", "Fairy"}},
-            {"Zubat",new string[]{"Poison", "Flying"}},
-            {"Golbat",new string[]{"Poison", "Flying"}},
-            {"Oddish",new string[]{"Grass", "Poison"}},
-            {"Gloom",new string[]{"Grass", "Poison"}},
-            {"Vileplume",new string[]{"Grass", "Poison"}},
-            {"Paras",new string[]{"Bug", "Grass"}},
-            {"Parasect",new string[]{"Bug", "Grass"}},
-            {"Venonat",new string[]{"Bug", "Poison"}},
-            {"Venomoth",new string[]{"Bug", "Poison"}},
-            {"Diglett",new string[]{"Ground"}},
-            {"Dugtrio",new string[]{"Ground"}},
-            {"Meowth",new string[]{"Normal"}},
-            {"Persian",new string[]{"Normal"}},
-            {"Psyduck",new string[]{"Water"}},
-            {"Golduck",new string[]{"Water"}},
-            {"Mankey",new string[]{"Fighting"}},
-            {"Primeape",new string[]{"Fighting"}},
-            {"Growlithe",new string[]{"Fire"}},
-            {"Arcanine",new string[]{"Fire"}},
-            {"Poliwag",new string[]{"Water"}},
-            {"Poliwhirl",new string[]{"Water"}},
-            {"Poliwrath",new string[]{"Water", "Fighting"}},
-            {"Abra",new string[]{"Psychic"}},
-            {"Kadabra",new string[]{"Psychic"}},
-            {"Alakazam",new string[]{"Psychic"}},
-            {"Machop",new string[]{"Fighting"}},
-            {"Machoke",new string[]{"Fighting"}},
-            {"Machamp",new string[]{"Fighting"}},
-            {"Bellsprout",new string[]{"Grass", "Poison"}},
-            {"Weepinbell",new string[]{"Grass", "Poison"}},
-            {"Victreebel",new string[]{"Grass", "Poison"}},
-            {"Tentacool",new string[]{"Water", "Poison"}},
-            {"Tentacruel",new string[]{"Water", "Poison"}},
-            {"Geodude",new string[]{"Rock", "Ground"}},
-            {"Graveler",new string[]{"Rock", "Ground"}},
-            {"Golem",new string[]{"Rock", "Ground"}},
-            {"Ponyta",new string[]{"Fire"}},
-            {"Rapidash",new string[]{"Fire"}},
-            {"Slowpoke",new string[]{"Water", "Psychic"}},
-            {"Slowbro",new string[]{"Water", "Psychic"}},
-            {"Magnemite",new string[]{"Electric", "Steel"}},
-            {"Magneton",new string[]{"Electric", "Steel"}},
-            {"Farfetch'd",new string[]{"Normal", "Flying"}},
-            {"Doduo",new string[]{"Normal", "Flying"}},
-            {"Dodrio",new string[]{"Normal", "Flying"}},
-            {"Seel",new string[]{"Water"}},
-            {"Dewgong",new string[]{"Water", "Ice"}},
-            {"Grimer",new string[]{"Poison"}},
-            {"Muk",new string[]{"Poison"}},
-            {"Muk - Alolan",new string[]{"Poison", "Dark"}},
-            {"Shellder",new string[]{"Water"}},
-            {"Cloyster",new string[]{"Water", "Ice"}},
-            {"Gastly",new string[]{"Ghost", "Poison"}},
-            {"Haunter",new string[]{"Ghost", "Poison"}},
-            {"Gengar",new string[]{"Ghost", "Poison"}},
-            {"Onix",new string[]{"Rock", "Ground"}},
-            {"Drowzee",new string[]{"Psychic"}},
-            {"Hypno",new string[]{"Psychic"}},
-            {"Krabby",new string[]{"Water"}},
-            {"Kingler",new string[]{"Water"}},
-            {"Voltorb",new string[]{"Electric"}},
-            {"Electrode",new string[]{"Electric"}},
-            {"Exeggcute",new string[]{"Grass", "Psychic"}},
-            {"Exeggutor",new string[]{"Grass", "Psychic"}},
-            {"Cubone",new string[]{"Ground"}},
-            {"Marowak",new string[]{"Ground"}},
-            {"Hitmonlee",new string[]{"Fighting"}},
-            {"Hitmonchan",new string[]{"Fighting"}},
-            {"Lickitung",new string[]{"Normal"}},
-            {"Koffing",new string[]{"Poison"}},
-            {"Weezing",new string[]{"Poison"}},
-            {"Rhyhorn",new string[]{"Ground", "Rock"}},
-            {"Rhydon",new string[]{"Ground", "Rock"}},
-            {"Chansey",new string[]{"Normal"}},
-            {"Tangela",new string[]{"Grass"}},
-            {"Kangaskhan",new string[]{"Normal"}},
-            {"Horsea",new string[]{"Water"}},
-            {"Seadra",new string[]{"Water"}},
-            {"Goldeen",new string[]{"Water"}},
-            {"Seaking",new string[]{"Water"}},
-            {"Staryu",new string[]{"Water"}},
-            {"Starmie",new string[]{"Water", "Psychic"}},
-            {"Mr. Mime",new string[]{"Psychic", "Fairy"}},
-            {"Scyther",new string[]{"Bug", "Flying"}},
-            {"Jynx",new string[]{"Ice", "Psychic"}},
-            {"Electabuzz",new string[]{"Electric"}},
-            {"Magmar",new string[]{"Fire"}},
-            {"Pinsir",new string[]{"Bug"}},
-            {"Tauros",new string[]{"Normal"}},
-            {"Magikarp",new string[]{"Water"}},
-            {"Gyarados",new string[]{"Water", "Flying"}},
-            {"Lapras",new string[]{"Water", "Ice"}},
-            {"Ditto",new string[]{"Normal"}},
-            {"Eevee",new string[]{"Normal"}},
-            {"Vaporeon",new string[]{"Water"}},
-            {"Jolteon",new string[]{"Electric"}},
-            {"Flareon",new string[]{"Fire"}},
-            {"Porygon",new string[]{"Normal"}},
-            {"Omanyte",new string[]{"Rock", "Water"}},
-            {"Omastar",new string[]{"Rock", "Water"}},
-            {"Kabuto",new string[]{"Rock", "Water"}},
-            {"Kabutops",new string[]{"Rock", "Water"}},
-            {"Aerodactyl",new string[]{"Rock", "Flying"}},
-            {"Snorlax",new string[]{"Normal"}},
-            {"Articuno",new string[]{"Ice", "Flying"}},
-            {"Zapdos",new string[]{"Electric", "Flying"}},
-            {"Moltres",new string[]{"Fire", "Flying"}},
-            {"Dratini",new string[]{"Dragon"}},
-            {"Dragonair",new string[]{"Dragon"}},
-            {"Dragonite",new string[]{"Dragon", "Flying"}},
-            {"Mewtwo",new string[]{"Psychic"}}
-          };
-        string[] typeStrings = pokedex[mon1];
-        succeeded &= TryConvertInput(ref typeStrings[0], ref types);
-        succeeded &= TryConvertInput(ref typeStrings[1], ref types);
-        if (!succeeded || types.Count == 0)
-        {
-            return;
-        }
-        typeInfo = API.MakeType(types.ToArray());
+        return pokedex.ContainsKey(input);
     }
 }
