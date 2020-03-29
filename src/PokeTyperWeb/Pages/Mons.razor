@@ -5,7 +5,7 @@
 <p>Enter a Pokémon</p>
 
 <p>
-    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnKeyUp" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnChange1" onfocus="this.value=''" />
         
     <datalist id="mons">
         @{
@@ -99,12 +99,23 @@ else if (typeInfo != null)
     private PokemonType typeInfo;
     private string error;
 
-    private void OnKeyUp(KeyboardEventArgs args)
+    private void OnChange1(ChangeEventArgs args)
     {
-        if (args.Key == "Enter")
+        type1 = (string)args.Value;
+        typeInfo = GetPokemonType();
+    }
+    
+    private PokemonType GetPokemonType()
+    {
+        var types = new List<TypeToken>(2);
+        bool succeeded = true;
+        succeeded &= TryConvertInput(type1, ref types);
+        succeeded &= TryConvertInput(type2, ref types);
+        if (!succeeded || types.Count == 0)
         {
-            MakeType();
+            return null;
         }
+        return API.MakeType(types.ToArray());
     }
 
     private bool TryConvertInput(ref string input, ref List<TypeToken> types)
