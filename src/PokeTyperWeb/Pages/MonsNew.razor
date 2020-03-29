@@ -249,22 +249,19 @@
     private void OnChange(ChangeEventArgs args)
     {
         string pokemon = (string)args.Value;
+        pokemon = pokemon.Trim();
+        if (!InputErrorCheck(pokemon)) {
+            return;
+        }
         typeInfo = API.MakeType(pokedex[pokemon]);
     }
 
-    private bool TryConvertInput(string input, ref List<TypeToken> types)
+    private bool InputErrorCheck(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
         {
-            return true;
-        }
-        input = input.Trim();
-        TypeToken t;
-        if (!API.TryConvertStringToType(input, out t))
-        {
             return false;
         }
-        types.Add(t);
-        return true;
+        return pokedex.ContainsKey(input);
     }
 }
