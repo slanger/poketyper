@@ -2,7 +2,7 @@
 {
 	public enum PokeToken : int
 	{
-		Bulbasaur = 0,
+        Bulbasaur = 0,
         Ivysaur,
         Venusaur,
         Charmander,
