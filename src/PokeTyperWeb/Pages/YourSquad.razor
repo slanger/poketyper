@@ -1,15 +1,20 @@
-@page "/mons"
+@page "/yoursquad"
 
-<h3>Pokemon</h3>
+<h3>Enter Your Squad</h3>
 
 <p>
-    Learn about the resistances and weaknesses of any Pokemon. Just enter
-    the Pokemon below. Currently only original 151 supported.
+    Enter your 6 pokemon to see how they best counter the types selected in the rest of the app.
 </p>
 
 <p>
     <!-- TODO: Get rid of the dropdown arrow in the input boxes. -->
-    <input type="search" list="mons" placeholder="Which Pokemon?" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 1" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 2" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 3" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 4" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 5" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 6" @onchange="OnChange" onfocus="this.value=''" />
+    
 
     <datalist id="mons">
         @{
@@ -23,77 +28,22 @@
     </datalist>
 </p>
 
-@if (typeInfo != null)
+@if (squad != null)
 {
     <!-- TODO: Change the below to use icons instead of text. -->
-    <h4><b>@typeInfo.Name Type</b></h4>
-    <h5><b>Resistances</b></h5>
-    <div class="flex-grid">
-        <div class="col">
-            <h6>Resist 2x</h6>
-            <ul class="ul-nostyle">
-                @foreach (var t in typeInfo.Resist2x)
-                {
-                    <li>@t.ToString()</li>
-                }
-            </ul>
-        </div>
-        <div class="col">
-            <h6>Resist 4x</h6>
-            <ul class="ul-nostyle">
-                @foreach (var t in typeInfo.Resist4x)
-                {
-                    <li>@t.ToString()</li>
-                }
-            </ul>
-        </div>
-        <div class="col">
-            <h6>Immune (0x)</h6>
-            <ul class="ul-nostyle">
-                @foreach (var t in typeInfo.Immune)
-                {
-                    <li>@t.ToString()</li>
-                }
-            </ul>
-        </div>
-    </div>
-    <h5><b>Weaknesses</b></h5>
-    <div class="flex-grid">
-        <div class="col">
-            <h6>Weak To 2x</h6>
-            <ul class="ul-nostyle">
-                @foreach (var t in typeInfo.WeakTo2x)
-                {
-                    <li>@t.ToString()</li>
-                }
-            </ul>
-        </div>
-        <div class="col">
-            <h6>Weak To 4x</h6>
-            <ul class="ul-nostyle">
-                @foreach (var t in typeInfo.WeakTo4x)
-                {
-                    <li>@t.ToString()</li>
-                }
-            </ul>
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <h5><b>Normal Damage (1x)</b></h5>
+    <h5><b>Your Party</b></h5>
     <ul class="ul-nostyle">
-        @foreach (var t in typeInfo.Normal)
+        @foreach (var p in squad)
         {
-            <li>@t.ToString()</li>
+            <li>@p.ToString()</li>
         }
     </ul>
-    
-    <h5><b>Best Counter in Your Party</b></h5>
     
 }
 
 @code {
     private PokemonType typeInfo;
+    var squad = new List<string>;
     IDictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
           {
             {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
@@ -115,6 +65,7 @@
             {"Pidgeotto", new TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
             {"Pidgeot", new TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
             {"Rattata", new TypeToken[]{TypeToken.Normal}},
+            {"Rattata - Alolan", new TypeToken[]{TypeToken.Normal, TypeToken.Dark}},
             {"Raticate", new TypeToken[]{TypeToken.Normal}},
             {"Spearow", new TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
             {"Fearow", new TypeToken[]{TypeToken.Normal, TypeToken.Flying}},
@@ -122,8 +73,11 @@
             {"Arbok", new TypeToken[]{TypeToken.Poison}},
             {"Pikachu", new TypeToken[]{TypeToken.Electric}},
             {"Raichu", new TypeToken[]{TypeToken.Electric}},
+            {"Raichu - Alolan", new TypeToken[]{TypeToken.Electric, TypeToken.Psychic}},
             {"Sandshrew", new TypeToken[]{TypeToken.Ground}},
+            {"Sandshrew - Alolan", new TypeToken[]{TypeToken.Steel, TypeToken.Ice}},
             {"Sandslash", new TypeToken[]{TypeToken.Ground}},
+            {"Sandslash - Alolan", new TypeToken[]{TypeToken.Steel, TypeToken.Ice}},
             {"Nidoran♀", new TypeToken[]{TypeToken.Poison}},
             {"Nidorina", new TypeToken[]{TypeToken.Poison}},
             {"Nidoqueen", new TypeToken[]{TypeToken.Poison, TypeToken.Ground}},
@@ -133,6 +87,7 @@
             {"Clefairy", new TypeToken[]{TypeToken.Fairy}},
             {"Clefable", new TypeToken[]{TypeToken.Fairy}},
             {"Vulpix", new TypeToken[]{TypeToken.Fire}},
+            {"Vulpix - Alolan", new TypeToken[]{TypeToken.Ice}},
             {"Ninetales", new TypeToken[]{TypeToken.Fire}},
             {"Jigglypuff", new TypeToken[]{TypeToken.Normal, TypeToken.Fairy}},
             {"Wigglytuff", new TypeToken[]{TypeToken.Normal, TypeToken.Fairy}},
@@ -146,8 +101,10 @@
             {"Venonat", new TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
             {"Venomoth", new TypeToken[]{TypeToken.Bug, TypeToken.Poison}},
             {"Diglett", new TypeToken[]{TypeToken.Ground}},
+            {"Diglett - Alolan", new TypeToken[]{TypeToken.Ground, TypeToken.Steel}},
             {"Dugtrio", new TypeToken[]{TypeToken.Ground}},
             {"Meowth", new TypeToken[]{TypeToken.Normal}},
+            {"Meowth - Alolan", new TypeToken[]{TypeToken.Dark}},
             {"Persian", new TypeToken[]{TypeToken.Normal}},
             {"Psyduck", new TypeToken[]{TypeToken.Water}},
             {"Golduck", new TypeToken[]{TypeToken.Water}},
@@ -170,6 +127,7 @@
             {"Tentacool", new TypeToken[]{TypeToken.Water, TypeToken.Poison}},
             {"Tentacruel", new TypeToken[]{TypeToken.Water, TypeToken.Poison}},
             {"Geodude", new TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
+            {"Geodude - Alolan", new TypeToken[]{TypeToken.Rock, TypeToken.Electric}},
             {"Graveler", new TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
             {"Golem", new TypeToken[]{TypeToken.Rock, TypeToken.Ground}},
             {"Ponyta", new TypeToken[]{TypeToken.Fire}},
@@ -184,6 +142,7 @@
             {"Seel", new TypeToken[]{TypeToken.Water}},
             {"Dewgong", new TypeToken[]{TypeToken.Water, TypeToken.Ice}},
             {"Grimer", new TypeToken[]{TypeToken.Poison}},
+            {"Grimer - Alolan", new TypeToken[]{TypeToken.Poison, TypeToken.Dark}},
             {"Muk", new TypeToken[]{TypeToken.Poison}},
             {"Muk - Alolan", new TypeToken[]{TypeToken.Poison, TypeToken.Dark}},
             {"Shellder", new TypeToken[]{TypeToken.Water}},
@@ -200,8 +159,10 @@
             {"Electrode", new TypeToken[]{TypeToken.Electric}},
             {"Exeggcute", new TypeToken[]{TypeToken.Grass, TypeToken.Psychic}},
             {"Exeggutor", new TypeToken[]{TypeToken.Grass, TypeToken.Psychic}},
+            {"Exeggutor - Alolan", new TypeToken[]{TypeToken.Grass, TypeToken.Dragon}},
             {"Cubone", new TypeToken[]{TypeToken.Ground}},
             {"Marowak", new TypeToken[]{TypeToken.Ground}},
+            {"Marowak - Alolan", new TypeToken[]{TypeToken.Fire, TypeToken.Ghost}},
             {"Hitmonlee", new TypeToken[]{TypeToken.Fighting}},
             {"Hitmonchan", new TypeToken[]{TypeToken.Fighting}},
             {"Lickitung", new TypeToken[]{TypeToken.Normal}},
@@ -251,12 +212,14 @@
 
     private void OnChange(ChangeEventArgs args)
     {
-        string pokemon = (string)args.Value;
-        pokemon = pokemon.Trim();
+        string newMon = (string)args.Value;
+        newMon = pokemon.Trim();
         if (!InputErrorCheck(pokemon)) {
             return;
         }
-        typeInfo = API.MakeType(pokedex[pokemon]);
+        #if newMon not in squad && squad.length < 6:
+        #  squad.add(newMon)
+         = API.MakeType(pokedex[pokemon]);
     }
 
     private bool InputErrorCheck(string input)
