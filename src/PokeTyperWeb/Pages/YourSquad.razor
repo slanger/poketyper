@@ -8,12 +8,12 @@
 
 <p>
     <!-- TODO: Get rid of the dropdown arrow in the input boxes. -->
-    <input type="search" list="mons" placeholder="Pokemon 1" @onchange="OnChange" onfocus="this.value=''" />
-    <input type="search" list="mons" placeholder="Pokemon 2" @onchange="OnChange" onfocus="this.value=''" />
-    <input type="search" list="mons" placeholder="Pokemon 3" @onchange="OnChange" onfocus="this.value=''" />
-    <input type="search" list="mons" placeholder="Pokemon 4" @onchange="OnChange" onfocus="this.value=''" />
-    <input type="search" list="mons" placeholder="Pokemon 5" @onchange="OnChange" onfocus="this.value=''" />
-    <input type="search" list="mons" placeholder="Pokemon 6" @onchange="OnChange" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 1" @onchange="OnChange1" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 2" @onchange="OnChange2" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 3" @onchange="OnChange3" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 4" @onchange="OnChange4" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 5" @onchange="OnChange5" onfocus="this.value=''" />
+    <input type="search" list="mons" placeholder="Pokemon 6" @onchange="OnChange6" onfocus="this.value=''" />
     
 
     <datalist id="mons">
@@ -42,8 +42,11 @@
 }
 
 @code {
-    private PokemonType typeInfo;
-    var squad = new List<string>;
+    
+    //Doesn't work when you initialize as 6-element array with string[6].
+    //If you don't have the empty strings to start, get error
+    PokeApiClient pokeClient = new PokeApiClient();
+    string[] squad = new string[] { "", "", "", "", "", ""};
     IDictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
           {
             {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
@@ -210,18 +213,65 @@
             {"Mewtwo", new TypeToken[]{TypeToken.Psychic}},
           };
 
-    private void OnChange(ChangeEventArgs args)
+    private void OnChange1(ChangeEventArgs args)
     {
         string newMon = (string)args.Value;
-        newMon = pokemon.Trim();
-        if (!InputErrorCheck(pokemon)) {
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
             return;
         }
-        #if newMon not in squad && squad.length < 6:
-        #  squad.add(newMon)
-         = API.MakeType(pokedex[pokemon]);
+        squad[0] = newMon;
+    }
+    
+    private void OnChange2(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[1] = newMon;
     }
 
+    private void OnChange3(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[2] = newMon;
+    }
+    
+    private void OnChange4(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[3] = newMon;
+    }
+    
+    private void OnChange5(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[4] = newMon;
+    }
+    
+    private void OnChange6(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[5] = newMon;
+    }
     private bool InputErrorCheck(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
