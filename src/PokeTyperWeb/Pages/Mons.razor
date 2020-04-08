@@ -3,7 +3,7 @@
 <h3>Pokemon</h3>
 
 <p>
-    Learn about the resistances and weaknesses of any Pokemon. Just enter the Pokemon below.
+    Learn about the resistances and weaknesses of any Pokemon. Just enter the Pokemon below. Additionally, select your own team and moves below to see which are best suited to counter that pokemon.
     Currently, only the Pokemon from the Let's Go Pikachu and Let's Go Eevee games (the original
     151 plus some Alolan forms) are supported.
 </p>
@@ -90,11 +90,97 @@
     </ul>
     
     <h5><b>Best Counter in Your Party</b></h5>
+    <h3>@bestCounterMon()</h3>
+    
     
 }
 
+<br><br>
+<h3>Enter Your Squad</h3>
+
+<p>
+    Enter your 6 pokemon to see how they best counter the pokemon selected above.
+</p>
+<p>
+    <table style="width:100%">
+      <tr>
+        <th>Pokemon</th>
+        <th>Move 1</th>
+        <th>Move 2</th>
+        <th>Move 3</th>
+        <th>Move 4</th>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 1" @onchange="OnChange1" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 2" @onchange="OnChange2" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 3" @onchange="OnChange3" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 4" @onchange="OnChange4" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 5" @onchange="OnChange5" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+      <tr>
+        <td><input type="search" list="mons" placeholder="Pokemon 6" @onchange="OnChange6" onfocus="this.value=''" /></td>
+        <td>Move 1</td>
+        <td>Move 2</td>
+        <td>Move 3</td>
+        <td>Move 4</td>
+      </tr>
+    </table>    
+</p>
+@if (squad != null)
+{
+    <!-- TODO: Change the below to use icons instead of text. -->
+    <h5><b>Your Party</b></h5>
+    <ul class="ul-nostyle">
+        @foreach (var p in squad)
+        {
+            <li>@p.Name.ToString()</li>
+        }
+    </ul> 
+}
 @code {
     private LocPokemonType typeInfo;
+    PokeApiClient pokeClient = new PokeApiClient();
+    public class sPMon
+    {
+      public string Name { get; set; }
+      public int Score { get; set; }
+      public TypeToken[] Types { get; set; }
+      public sPMon(string name, TypeToken[] types, int score)
+      {
+          Name = name;
+          Types = types;
+          Score = score;
+      }
+    }
+    sPMon[] squad = new sPMon[6]{new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0), new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0)};
     private Dictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
     {
         {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
@@ -294,6 +380,135 @@
         if (pokedex.ContainsKey(pokemon))
         {
             typeInfo = API.MakeType(pokedex[pokemon]);
+            ScoreParty();
         }
+    }
+    
+    private void OnChange1(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[0].Name = newMon;
+        squad[0].Types = pokedex[newMon];
+    }
+    
+    private void OnChange2(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[1].Name = newMon;
+        squad[1].Types = pokedex[newMon];
+    }
+
+    private void OnChange3(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[2].Name = newMon;
+        squad[2].Types = pokedex[newMon];
+    }
+    
+    private void OnChange4(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[3].Name = newMon;
+        squad[3].Types = pokedex[newMon];
+    }
+    
+    private void OnChange5(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[4].Name = newMon;
+        squad[4].Types = pokedex[newMon];
+    }
+    
+    private void OnChange6(ChangeEventArgs args)
+    {
+        string newMon = (string)args.Value;
+        newMon = newMon.Trim();
+        if (!InputErrorCheck(newMon)) {
+            return;
+        }
+        squad[5].Name = newMon;
+        squad[5].Types = pokedex[newMon];
+    }
+    
+    private bool InputErrorCheck(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return false;
+        }
+        return pokedex.ContainsKey(input);
+    }
+    
+    private void ScoreParty()
+    {
+        foreach (sPMon p in squad)
+            {
+                foreach (TypeToken t in p.Types) {
+                    foreach (TypeToken ti in typeInfo.Resist2x){
+                        if (t == ti){
+                            p.Score = p.Score-2;
+                        }
+                    }
+                    foreach (TypeToken ti in typeInfo.Resist4x){
+                        if (t == ti){
+                            p.Score = p.Score-4;
+                        }
+                    }
+                    foreach (TypeToken ti in typeInfo.Immune){
+                        if (t == ti){
+                            p.Score = p.Score-8;
+                        }
+                    }
+                    foreach (TypeToken ti in typeInfo.WeakTo2x){
+                        if (t == ti){
+                            p.Score = p.Score+2;
+                        }
+                    }
+                    foreach (TypeToken ti in typeInfo.WeakTo4x){
+                        if (t == ti){
+                            p.Score = p.Score+4;
+                        }
+                    }
+                    foreach (TypeToken ti in typeInfo.Normal){
+                        if (t == ti){
+                            p.Score = p.Score+1;
+                        }
+                    }      
+                }
+            }
+    }
+    
+    private string bestCounterMon(){
+      int index = 0;
+      int highestscore = 0;
+      int indhighestscore = 0;
+      foreach (sPMon p in squad){
+        if(p.Score > highestscore){
+          highestscore = p.Score;
+          indhighestscore = index;
+        }
+        index++;
+      }
+      return squad[indhighestscore].Name;
     }
 }
