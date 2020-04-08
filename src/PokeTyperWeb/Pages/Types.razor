@@ -98,7 +98,7 @@
 @code {
     private string type1;
     private string type2;
-    private PokemonType typeInfo;
+    private LocPokemonType typeInfo;
 
     private void OnChange1(ChangeEventArgs args)
     {
@@ -112,7 +112,7 @@
         typeInfo = GetPokemonType();
     }
 
-    private PokemonType GetPokemonType()
+    private LocPokemonType GetPokemonType()
     {
         var types = new List<TypeToken>(2);
         bool succeeded = true;
