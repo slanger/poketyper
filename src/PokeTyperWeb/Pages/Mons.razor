@@ -3,8 +3,9 @@
 <h3>Pokemon</h3>
 
 <p>
-    Learn about the resistances and weaknesses of any Pokemon. Just enter
-    the Pokemon below. Currently only original 151 supported.
+    Learn about the resistances and weaknesses of any Pokemon. Just enter the Pokemon below.
+    Currently, only the Pokemon from the Let's Go Pikachu and Let's Go Eevee games (the original
+    151 plus some Alolan forms) are supported.
 </p>
 
 <p>
@@ -91,7 +92,7 @@
 
 @code {
     private PokemonType typeInfo;
-    IDictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
+    private Dictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
     {
         {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
         {"Ivysaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
@@ -261,19 +262,11 @@
     {
         string pokemon = (string)args.Value;
         pokemon = pokemon.Trim();
-        if (!InputErrorCheck(pokemon))
+        // The inputted Pokemon name must exactly match the name in the Dictionary.
+        // TODO: Allow for inexact matching, i.e. ignore case.
+        if (pokedex.ContainsKey(pokemon))
         {
-            return;
+            typeInfo = API.MakeType(pokedex[pokemon]);
         }
-        typeInfo = API.MakeType(pokedex[pokemon]);
-    }
-
-    private bool InputErrorCheck(string input)
-    {
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            return false;
-        }
-        return pokedex.ContainsKey(input);
     }
 }
