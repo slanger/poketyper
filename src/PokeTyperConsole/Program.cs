@@ -183,10 +183,10 @@ namespace PokeTyperConsole
 				return;
 			}
 
-			var types = new List<PokemonType>();
+			var types = new List<LocPokemonType>();
 			var typesLength = Enum.GetValues(typeof(TypeToken)).Length;
 			int numResistances;
-			PokemonType t;
+			LocPokemonType t;
 			for (int i = 0; i < typesLength; i++)
 			{
 				var type1 = (TypeToken)i;
@@ -230,7 +230,7 @@ namespace PokeTyperConsole
 			int maxNumResistances = -1;
 			int numTypesWithMaxResistances = -1;
 			int numResistances;
-			PokemonType t;
+			LocPokemonType t;
 
 			for (int i = 0; i < typesLength; i++)
 			{

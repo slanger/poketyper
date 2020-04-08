@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PokeTyper
 {
-	public class PokemonType : IComparable<PokemonType>
+	public class LocPokemonType : IComparable<LocPokemonType>
 	{
 		public TypeToken Type1
 		{
@@ -55,7 +55,7 @@ namespace PokeTyper
 		private readonly TypeToken[] types;
 		private readonly string name;
 
-		private PokemonType(
+		private LocPokemonType(
 			TypeToken[] resist4x,
 			TypeToken[] resist2x,
 			TypeToken[] normal,
@@ -92,7 +92,7 @@ namespace PokeTyper
 			this.name = sb.ToString().TrimEnd(separator);
 		}
 
-		public int CompareTo(PokemonType other)
+		public int CompareTo(LocPokemonType other)
 		{
 			if (other == null)
 			{
@@ -121,7 +121,7 @@ namespace PokeTyper
 
 		public override bool Equals(object obj)
 		{
-			var other = obj as PokemonType;
+			var other = obj as LocPokemonType;
 			if (other == null)
 			{
 				return false;
@@ -178,7 +178,7 @@ namespace PokeTyper
 			return sb.ToString();
 		}
 
-		internal static PokemonType MakeType(params TypeToken[] types)
+		internal static LocPokemonType MakeType(params TypeToken[] types)
 		{
 			Debug.Assert(types.Length > 0 && types.Length <= 2);
 
@@ -208,7 +208,7 @@ namespace PokeTyper
 			weakTo4x.CopyTo(arrWeakTo4x);
 			immune.CopyTo(arrImmune);
 
-			return new PokemonType(
+			return new LocPokemonType(
 				arrResist4x,
 				arrResist2x,
 				arrNormal,
