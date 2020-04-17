@@ -195,7 +195,7 @@
     }
     sPMon[] squad = new sPMon[6]{new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0), new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0)};
     private Dictionary<string, string> moves = new Dictionary<string, string>();
-    private List<string> moveslist = Get("https://pokeapi.co/api/v2/move?limit=746");
+    private string movescall = Get("https://pokeapi.co/api/v2/move?limit=746");
     private Dictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
     {
         {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
