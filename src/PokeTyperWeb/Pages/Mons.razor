@@ -22,6 +22,17 @@
             }
         }
     </datalist>
+    
+    <datalist id="moves">
+        @{
+            var moves = new List<string>(pokedex.Keys);
+            moves.Sort();
+            foreach (string n in moves)
+            {
+                <option value="@n" />
+            }
+        }
+    </datalist>
 </p>
 
 @if (typeInfo != null)
@@ -173,14 +184,18 @@
       public string Name { get; set; }
       public int Score { get; set; }
       public TypeToken[] Types { get; set; }
+      public Dictionary<string, TypeToken[]> Moves { get; set; }
       public sPMon(string name, TypeToken[] types, int score)
       {
           Name = name;
           Types = types;
           Score = score;
+          Moves = new Dictionary<string, TypeToken[]>();
       }
     }
     sPMon[] squad = new sPMon[6]{new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0), new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0),new sPMon("Abra",new TypeToken[]{TypeToken.Psychic},0)};
+    private Dictionary<string, string> moves = new Dictionary<string, string>();
+    private List<string> moveslist = Get("https://pokeapi.co/api/v2/move?limit=746");
     private Dictionary<string, TypeToken[]> pokedex = new Dictionary<string, TypeToken[]>()
     {
         {"Bulbasaur", new TypeToken[]{TypeToken.Grass, TypeToken.Poison}},
@@ -370,6 +385,19 @@
         {"Meltan", new TypeToken[]{TypeToken.Steel}},
         {"Melmetal", new TypeToken[]{TypeToken.Steel}},
     };
+    
+    public string Get(string uri)
+    {
+      HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+      request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+      using(HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+      using(Stream stream = response.GetResponseStream())
+      using(StreamReader reader = new StreamReader(stream))
+      {
+          return reader.ReadToEnd();
+      }
+    }
 
     private void OnChange(ChangeEventArgs args)
     {
