@@ -20,9 +20,9 @@ namespace PokeTyper
 			return false;
 		}
 
-		public static PokemonType MakeType(params TypeToken[] types)
+		public static LocPokemonType MakeType(params TypeToken[] types)
 		{
-			return PokemonType.MakeType(types);
+			return LocPokemonType.MakeType(types);
 		}
 
 		public static Coverage MakeCoverage(params TypeToken[] types)

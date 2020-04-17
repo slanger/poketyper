@@ -11,12 +11,12 @@ namespace PokeTyper
 		private const string errorNotEnoughTypes =
 			"This Coverage does not have enough PokemonTypes.";
 
-		public readonly PokemonType[] Effective4x;
-		public readonly PokemonType[] Effective2x;
-		public readonly PokemonType[] Effective1x;
-		public readonly PokemonType[] Effective05x;
-		public readonly PokemonType[] Effective025x;
-		public readonly PokemonType[] Effective0x;
+		public readonly LocPokemonType[] Effective4x;
+		public readonly LocPokemonType[] Effective2x;
+		public readonly LocPokemonType[] Effective1x;
+		public readonly LocPokemonType[] Effective05x;
+		public readonly LocPokemonType[] Effective025x;
+		public readonly LocPokemonType[] Effective0x;
 
 		private readonly TypeToken[] types;
 		private readonly string name;
@@ -85,12 +85,12 @@ namespace PokeTyper
 		}
 
 		private Coverage(
-			PokemonType[] effective4x,
-			PokemonType[] effective2x,
-			PokemonType[] effective1x,
-			PokemonType[] effective05x,
-			PokemonType[] effective025x,
-			PokemonType[] effective0x,
+			LocPokemonType[] effective4x,
+			LocPokemonType[] effective2x,
+			LocPokemonType[] effective1x,
+			LocPokemonType[] effective05x,
+			LocPokemonType[] effective025x,
+			LocPokemonType[] effective0x,
 			params TypeToken[] types)
 		{
 			Debug.Assert(types.Length > 0 && types.Length <= 4);
@@ -211,15 +211,15 @@ namespace PokeTyper
 		{
 			Debug.Assert(types.Length > 0 && types.Length <= 4);
 
-			var effective4x = new HashSet<PokemonType>();
-			var effective2x = new HashSet<PokemonType>();
-			var effective1x = new HashSet<PokemonType>();
-			var effective05x = new HashSet<PokemonType>();
-			var effective025x = new HashSet<PokemonType>();
-			var effective0x = new HashSet<PokemonType>();
+			var effective4x = new HashSet<LocPokemonType>();
+			var effective2x = new HashSet<LocPokemonType>();
+			var effective1x = new HashSet<LocPokemonType>();
+			var effective05x = new HashSet<LocPokemonType>();
+			var effective025x = new HashSet<LocPokemonType>();
+			var effective0x = new HashSet<LocPokemonType>();
 
 			var typesLength = Enum.GetValues(typeof(TypeToken)).Length;
-			PokemonType t;
+			LocPokemonType t;
 			for (int i = 0; i < typesLength; i++)
 			{
 				var t1 = (TypeToken)i;
@@ -258,12 +258,12 @@ namespace PokeTyper
 				}
 			}
 
-			var arrEffective4x = new PokemonType[effective4x.Count];
-			var arrEffective2x = new PokemonType[effective2x.Count];
-			var arrEffective1x = new PokemonType[effective1x.Count];
-			var arrEffective05x = new PokemonType[effective05x.Count];
-			var arrEffective025x = new PokemonType[effective025x.Count];
-			var arrEffective0x = new PokemonType[effective0x.Count];
+			var arrEffective4x = new LocPokemonType[effective4x.Count];
+			var arrEffective2x = new LocPokemonType[effective2x.Count];
+			var arrEffective1x = new LocPokemonType[effective1x.Count];
+			var arrEffective05x = new LocPokemonType[effective05x.Count];
+			var arrEffective025x = new LocPokemonType[effective025x.Count];
+			var arrEffective0x = new LocPokemonType[effective0x.Count];
 
 			effective4x.CopyTo(arrEffective4x);
 			effective2x.CopyTo(arrEffective2x);
@@ -284,13 +284,13 @@ namespace PokeTyper
 
 		private static void MakeCoverageHelper(
 			TypeToken attackingType,
-			PokemonType defendingType,
-			HashSet<PokemonType> effective4x,
-			HashSet<PokemonType> effective2x,
-			HashSet<PokemonType> effective1x,
-			HashSet<PokemonType> effective05x,
-			HashSet<PokemonType> effective025x,
-			HashSet<PokemonType> effective0x)
+			LocPokemonType defendingType,
+			HashSet<LocPokemonType> effective4x,
+			HashSet<LocPokemonType> effective2x,
+			HashSet<LocPokemonType> effective1x,
+			HashSet<LocPokemonType> effective05x,
+			HashSet<LocPokemonType> effective025x,
+			HashSet<LocPokemonType> effective0x)
 		{
 			if (effective4x.Contains(defendingType))
 			{
