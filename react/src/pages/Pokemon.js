@@ -32,10 +32,11 @@ class Pokemon extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squad: Array(5),
+            squad: Array(6),
             typeInfo: null,
         };
         this.handleChange = this.handleChange.bind(this);
+        this.changeSquad = this.changeSquad.bind(this);
     }
   
     makeType(pokemon){
@@ -203,6 +204,15 @@ class Pokemon extends React.Component {
         this.setState({ typeInfo: null });
       }
     }
+  
+    changeSquad(index, e) {
+      console.log(index);
+      console.log(e.target.value);
+      let curSquad = [...this.state.squad];
+      curSquad[index] = e.target.value;
+      console.log(curSquad);
+      this.setState({ squad: curSquad });
+    }
 
     render() {
         const squad = this.state.squad;
@@ -296,7 +306,65 @@ class Pokemon extends React.Component {
                   </div>
               </div>
             }
-      </div>
+              <br></br><br></br>
+              <h3>Enter Your Squad</h3>
+              <p>
+                  Enter your 6 pokemon to see how they best counter the pokemon selected above.
+              </p>
+              <p>
+                  <table>
+                    <tr>
+                      <th>Pokemon</th>
+                      <th>Move 1</th>
+                      <th>Move 2</th>
+                      <th>Move 3</th>
+                      <th>Move 4</th>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 1" onfocus="this.value=''" onChange={(evt) => this.changeSquad(0, evt)}/></td>
+                      <td><input type="search" list="" placeholder="Select Move" onfocus="this.value=''"/></td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 2" onfocus="this.value=''" onChange={(evt) => this.changeSquad(1, evt)}/></td>
+                      <td>Move 1</td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 3" onfocus="this.value=''" onChange={(evt) => this.changeSquad(2, evt)}/></td>
+                      <td>Move 1</td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 4" onfocus="this.value=''" onChange={(evt) => this.changeSquad(3, evt)}/></td>
+                      <td>Move 1</td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 5" onfocus="this.value=''" onChange={(evt) => this.changeSquad(4, evt)}/></td>
+                      <td>Move 1</td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                    <tr>
+                      <td><input type="search" list="mons" placeholder="Pokemon 6" onfocus="this.value=''" onChange={(evt) => this.changeSquad(5, evt)}/></td>
+                      <td>Move 1</td>
+                      <td>Move 2</td>
+                      <td>Move 3</td>
+                      <td>Move 4</td>
+                    </tr>
+                  </table>    
+              </p>
+          </div>
       );
     }
 }
