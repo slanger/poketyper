@@ -40,6 +40,9 @@ class Pokemon extends React.Component {
   
     makeType(pokemon){
       const inputtypes = this.props.pokedex[pokemon];
+      if (inputtypes == null) {
+        return null;
+      }
       const typeChart = {
         [types.normal]: {
           superEffective: [types.fighting], // fighting is super effective to normal
