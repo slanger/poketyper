@@ -23,6 +23,11 @@ const types = {
   fairy: 'fairy',
 };
 
+function capFL(inst) {
+  console.log(inst);
+  return inst.charAt(0).toUpperCase() + inst.slice(1);
+}
+
 class Pokemon extends React.Component {
     constructor(props) {
         super(props);
@@ -182,9 +187,8 @@ class Pokemon extends React.Component {
           }
         }
       }
-      console.log(damageScore);
-      typeObj.Name = inputtypes.join("/");
-      console.log(typeObj);
+      let newArr = inputtypes.map(i => capFL(i));
+      typeObj.Name = newArr.join("/");
       return typeObj;
     }
   
