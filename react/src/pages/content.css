@@ -2,3 +2,21 @@
   margin-left: 250px;
   padding: 2em;
 }
+
+.typeInfo {
+  overflow: scroll;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1em;
+}
+
+.col {
+  margin-right: auto;
+}
+
+.list {
+  list-style: none;
+}

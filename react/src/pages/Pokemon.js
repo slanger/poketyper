@@ -248,40 +248,40 @@ class Pokemon extends React.Component {
               {dlist}
             </datalist>
             {this.state.typeInfo && 
-              <div>
+              <div className="typeInfo">
                   <h4><b>{this.state.typeInfo.Name} Type</b></h4>
                   <h5><b>Resistances</b></h5>
-                  <div class="flex-grid">
+                  <div class="row">
                       <div class="col">
                           <h6>Resist 2x</h6>
-                          <ul class="ul-nostyle">
+                          <ul class="list">
                               {resist2x}
                           </ul>
                       </div>
                       <div class="col">
                           <h6>Resist 4x</h6>
-                          <ul class="ul-nostyle">
+                          <ul class="list">
                               {resist4x}
                           </ul>
                       </div>
                       <div class="col">
                           <h6>Immune (0x)</h6>
-                          <ul class="ul-nostyle">
+                          <ul class="list">
                               {Immune}
                           </ul>
                       </div>
                   </div>
                   <h5><b>Weaknesses</b></h5>
-                  <div class="flex-grid">
+                  <div class="row">
                       <div class="col">
                           <h6>Weak To 2x</h6>
-                          <ul class="ul-nostyle">
+                          <ul class="list">
                               {WeakTo2x}
                           </ul>
                       </div>
                       <div class="col">
                           <h6>Weak To 4x</h6>
-                          <ul class="ul-nostyle">
+                          <ul class="list">
                               {WeakTo4x}
                           </ul>
                       </div>
@@ -289,9 +289,11 @@ class Pokemon extends React.Component {
                       </div>
                   </div>
                   <h5><b>Normal Damage (1x)</b></h5>
-                  <ul class="ul-nostyle">
+                  <div class="row">
+                    <ul class="list">
                       {NormalDamage}
-                  </ul>
+                    </ul>
+                  </div>
               </div>
             }
       </div>
