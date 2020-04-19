@@ -285,12 +285,18 @@
     private void OnChange(ChangeEventArgs args)
     {
         string pokemon = (string)args.Value;
+        typeInfo = GetPokemonType(pokemon);
+    }
+
+    private PokemonType GetPokemonType(string pokemon)
+    {
         pokemon = pokemon.Trim();
         // The inputted Pokemon name must exactly match the name in the Dictionary.
         // TODO: Allow for inexact matching, i.e. ignore case.
-        if (pokedex.ContainsKey(pokemon))
+        if (!pokedex.ContainsKey(pokemon))
         {
-            typeInfo = API.MakeType(pokedex[pokemon]);
+            return null;
         }
+        return API.MakeType(pokedex[pokemon]);
     }
 }
