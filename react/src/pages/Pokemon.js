@@ -98,11 +98,15 @@ class Pokemon extends React.Component {
         const opptypes = this.props.pokedex[this.state.opponent];
         const atkBoard = this.calcDamageBoard(opptypes);
         let atkScore = atkBoard[montypes[0]];
-        if (montypes.length > 1){ atkScore+=atkBoard[montypes[1]]}
+        if (montypes.length > 1) {
+          atkScore = Math.max(atkScore, atkBoard[montypes[1]]);
+        }
         
         const defBoard = this.calcDamageBoard(montypes);
         let defScore = defBoard[opptypes[0]];
-        if (opptypes.length > 1){ defScore+=defBoard[opptypes[1]]}
+        if (opptypes.length > 1) {
+          defScore = Math.max(defScore, defBoard[opptypes[1]]);
+        }
         
         myMonScore = atkScore-defScore;
         // damage score of opposing mon against this mon
