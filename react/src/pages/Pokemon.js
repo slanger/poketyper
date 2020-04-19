@@ -113,11 +113,15 @@ class Pokemon extends React.Component {
     handleChange(e) {
       if (this.props.pokedex.hasOwnProperty(e.target.value)){
         let typeVal = this.makeType(e.target.value);
-        this.setState({ typeInfo: typeVal, opponent: e.target.value});
-        //Re-score squad
-        //let curSquad = [...this.state.squad];
-        //curSquad.forEach((o, i, a) => a[i].Score = this.scoreMon(a[i].Name));
-        //this.setState({ squad: curSquad });
+        let curSquad = [...this.state.squad];
+        this.setState({ typeInfo: typeVal, opponent: e.target.value}, () => {
+          curSquad.forEach(mon => {
+            if(mon.hasOwnProperty("Name")){
+              mon.Score = this.scoreMon(mon.Name);
+            }
+          });
+          this.setState({ squad: curSquad });
+        });
       } else {
         this.setState({ typeInfo: null, opponent: null});
       }
@@ -145,7 +149,7 @@ class Pokemon extends React.Component {
         let NormalDamage = "";
         let rankedSquad = squad.slice().sort(function (a, b) {return b.Score-a.Score;});
         const rankedSquadList = rankedSquad.map(function(item){
-                return <p>{item.Name} Score:{item.Score}</p>;
+                return <p>{item.Name} : {item.Score}</p>;
               });
         if (this.state.typeInfo) {
           resist2x = this.state.typeInfo.Resist2x.map(function(item){
