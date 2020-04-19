@@ -24,7 +24,6 @@ const types = {
 };
 
 function capFL(inst) {
-  console.log(inst);
   return inst.charAt(0).toUpperCase() + inst.slice(1);
 }
 
@@ -32,11 +31,13 @@ class Pokemon extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squad: Array(6),
+            squad: [{},{},{},{},{},{}],
             typeInfo: null,
+            opponent: null
         };
         this.handleChange = this.handleChange.bind(this);
         this.changeSquad = this.changeSquad.bind(this);
+        this.calcDamageBoard = this.calcDamageBoard.bind(this);
     }
   
     makeType(pokemon){
@@ -44,118 +45,7 @@ class Pokemon extends React.Component {
       if (inputtypes == null) {
         return null;
       }
-      const typeChart = {
-        [types.normal]: {
-          superEffective: [types.fighting], // fighting is super effective to normal
-          notVeryEffective: [],
-          noEffect: [types.ghost], // ghost has no effect to normal
-        },
-        [types.fire]: {
-          superEffective: [types.water, types.ground, types.rock],
-          notVeryEffective: [types.fire, types.grass, types.ice, types.bug, types.steel, types.fairy],
-          noEffect: [],
-        },
-        [types.water]: {
-          superEffective: [types.electric, types.grass],
-          notVeryEffective: [types.fire, types.water, types.ice, types.steel],
-          noEffect: [],
-        },
-        [types.electric]: {
-          superEffective: [types.ground],
-          notVeryEffective: [types.electric, types.flying, types.steel],
-          noEffect: [],
-        },
-        [types.grass]: {
-          superEffective: [types.fire, types.ice, types.poison, types.flying, types.bug],
-          notVeryEffective: [types.water, types.electric, types.grass, types.ground],
-          noEffect: [],
-        },
-        [types.ice]: {
-          superEffective: [types.fire, types.fighting, types.rock, types.steel],
-          notVeryEffective: [types.ice],
-          noEffect: [],
-        },
-        [types.fighting]: {
-          superEffective: [types.flying, types.psychic, types.fairy],
-          notVeryEffective: [types.bug, types.rock, types.dark],
-          noEffect: [],
-        },
-        [types.poison]: {
-          superEffective: [types.ground, types.psychic],
-          notVeryEffective: [types.grass, types.fighting, types.poison, types.bug, types.fairy],
-          noEffect: [],
-        },
-        [types.ground]: {
-          superEffective: [types.water, types.grass, types.ice],
-          notVeryEffective: [types.poison, types.rock],
-          noEffect: [types.electric],
-        },
-        [types.flying]: {
-          superEffective: [types.electric, types.ice, types.rock],
-          notVeryEffective: [types.grass, types.fighting, types.bug],
-          noEffect: [types.ground],
-        },
-        [types.psychic]: {
-          superEffective: [types.bug, types.ghost, types.dark],
-          notVeryEffective: [types.fighting, types.psychic],
-          noEffect: [],
-        },
-        [types.bug]: {
-          superEffective: [types.fire, types.flying, types.rock],
-          notVeryEffective: [types.grass, types.fighting, types.ground],
-          noEffect: [],
-        },
-        [types.rock]: {
-          superEffective: [types.water, types.grass, types.fighting, types.ground, types.steel],
-          notVeryEffective: [types.normal, types.fire, types.poison, types.flying],
-          noEffect: [],
-        },
-        [types.ghost]: {
-          superEffective: [types.ghost, types.dark],
-          notVeryEffective: [types.poison, types.bug],
-          noEffect: [types.normal, types.fighting],
-        },
-        [types.dragon]: {
-          superEffective: [types.ice, types.dragon, types.fairy],
-          notVeryEffective: [types.fire, types.water, types.electric, types.grass],
-          noEffect: [],
-        },
-        [types.dark]: {
-          superEffective: [types.fighting, types.bug, types.fairy],
-          notVeryEffective: [types.ghost, types.dark],
-          noEffect: [types.psychic],
-        },
-        [types.steel]: {
-          superEffective: [types.fire, types.fighting, types.ground],
-          notVeryEffective: [types.normal, types.grass, types.ice, types.flying, types.psychic, types.bug, types.rock, types.dragon, types.steel, types.fairy],
-          noEffect: [types.poison],
-        },
-        [types.fairy]: {
-          superEffective: [types.poison, types.steel],
-          notVeryEffective: [types.fighting, types.bug, types.dark],
-          noEffect: [types.dragon],
-        },
-      };
-      let damageScore = {
-          [types.normal]: 1,
-          [types.fire]: 1,
-          [types.water]: 1,
-          [types.electric]: 1,
-          [types.grass]: 1,
-          [types.ice]: 1,
-          [types.fighting]: 1,
-          [types.poison]: 1,
-          [types.ground]: 1,
-          [types.flying]: 1,
-          [types.psychic]: 1,
-          [types.bug]: 1,
-          [types.rock]: 1,
-          [types.ghost]: 1,
-          [types.dragon]: 1,
-          [types.dark]: 1,
-          [types.steel]: 1,
-          [types.fairy]: 1
-      }
+
       let typeObj = {
         'Name': "",
         'Resist2x': [],
@@ -165,26 +55,20 @@ class Pokemon extends React.Component {
         'WeakTo4x': [],
         'Immune': []
       };
-      inputtypes.forEach(type => {
-        console.log(type);
-        let matchup = typeChart[type];
-        console.log(matchup);
-        matchup['superEffective'].forEach(element => {damageScore[element]*=2});
-        matchup['notVeryEffective'].forEach(element => {damageScore[element]*=.5});
-        matchup['noEffect'].forEach(element => {damageScore[element]*=0});
-      });
+
+      let newScore = this.calcDamageBoard(inputtypes);
       const typeOptions = Object.keys(types);
       for (const key of typeOptions) {
-        if (damageScore.hasOwnProperty(key)){
-          if (damageScore[key] === .5) {
+        if (newScore.hasOwnProperty(key)){
+          if (newScore[key] === .5) {
             typeObj['Resist2x'].push(key);
-          } else if (damageScore[key] === .25) {
+          } else if (newScore[key] === .25) {
             typeObj['Resist4x'].push(key);
-          } else if (damageScore[key] === 2) {
+          } else if (newScore[key] === 2) {
             typeObj['WeakTo2x'].push(key);
-          } else if (damageScore[key] === 4) {
+          } else if (newScore[key] === 4) {
             typeObj['WeakTo4x'].push(key);
-          } else if (damageScore[key] === 0) {
+          } else if (newScore[key] === 0) {
             typeObj['Immune'].push(key);
           } else {
             typeObj['Normal'].push(key);
@@ -196,22 +80,56 @@ class Pokemon extends React.Component {
       return typeObj;
     }
   
+    calcDamageBoard(inputtypes) {
+      let newScore = { ...this.props.damageBoard };
+      inputtypes.forEach(type => {
+        let matchup = this.props.typeChart[type];
+        matchup['superEffective'].forEach(element => {newScore[element]*=2});
+        matchup['notVeryEffective'].forEach(element => {newScore[element]*=.5});
+        matchup['noEffect'].forEach(element => {newScore[element]*=0});
+      });
+      return newScore;
+    }
+  
+    scoreMon(inputMon) {
+      let myMonScore = 0;
+      if(this.state.typeInfo){
+        const montypes = this.props.pokedex[inputMon];
+        const opptypes = this.props.pokedex[this.state.opponent];
+        const atkBoard = this.calcDamageBoard(opptypes);
+        let atkScore = atkBoard[montypes[0]];
+        if (montypes.length > 1){ atkScore+=atkBoard[montypes[1]]}
+        
+        const defBoard = this.calcDamageBoard(montypes);
+        let defScore = defBoard[opptypes[0]];
+        if (opptypes.length > 1){ defScore+=defBoard[opptypes[1]]}
+        
+        myMonScore = atkScore-defScore;
+        // damage score of opposing mon against this mon
+      }
+      return myMonScore;
+    }
+  
     handleChange(e) {
-      if (e.target.value){
+      if (this.props.pokedex.hasOwnProperty(e.target.value)){
         let typeVal = this.makeType(e.target.value);
-        this.setState({ typeInfo: typeVal });
+        this.setState({ typeInfo: typeVal, opponent: e.target.value});
+        //Re-score squad
+        //let curSquad = [...this.state.squad];
+        //curSquad.forEach((o, i, a) => a[i].Score = this.scoreMon(a[i].Name));
+        //this.setState({ squad: curSquad });
       } else {
-        this.setState({ typeInfo: null });
+        this.setState({ typeInfo: null, opponent: null});
       }
     }
   
     changeSquad(index, e) {
-      console.log(index);
-      console.log(e.target.value);
-      let curSquad = [...this.state.squad];
-      curSquad[index] = e.target.value;
-      console.log(curSquad);
-      this.setState({ squad: curSquad });
+      if (this.props.pokedex.hasOwnProperty(e.target.value)){
+        let curSquad = [...this.state.squad];
+        curSquad[index].Name = e.target.value;
+        curSquad[index].Score = this.scoreMon(e.target.value);
+        this.setState({ squad: curSquad });
+      }
     }
 
     render() {
@@ -225,6 +143,10 @@ class Pokemon extends React.Component {
         let WeakTo2x = "";
         let WeakTo4x = "";
         let NormalDamage = "";
+        let rankedSquad = squad.slice().sort(function (a, b) {return b.Score-a.Score;});
+        const rankedSquadList = rankedSquad.map(function(item){
+                return <p>{item.Name} Score:{item.Score}</p>;
+              });
         if (this.state.typeInfo) {
           resist2x = this.state.typeInfo.Resist2x.map(function(item){
                   return <li>{item}</li>
@@ -261,46 +183,46 @@ class Pokemon extends React.Component {
               <div className="typeInfo">
                   <h4><b>{this.state.typeInfo.Name} Type</b></h4>
                   <h5><b>Resistances</b></h5>
-                  <div class="row">
-                      <div class="col">
+                  <div className="row">
+                      <div className="col">
                           <h6>Resist 2x</h6>
-                          <ul class="list">
+                          <ul className="list">
                               {resist2x}
                           </ul>
                       </div>
-                      <div class="col">
+                      <div className="col">
                           <h6>Resist 4x</h6>
-                          <ul class="list">
+                          <ul className="list">
                               {resist4x}
                           </ul>
                       </div>
-                      <div class="col">
+                      <div className="col">
                           <h6>Immune (0x)</h6>
-                          <ul class="list">
+                          <ul className="list">
                               {Immune}
                           </ul>
                       </div>
                   </div>
                   <h5><b>Weaknesses</b></h5>
-                  <div class="row">
-                      <div class="col">
+                  <div className="row">
+                      <div className="col">
                           <h6>Weak To 2x</h6>
-                          <ul class="list">
+                          <ul className="list">
                               {WeakTo2x}
                           </ul>
                       </div>
-                      <div class="col">
+                      <div className="col">
                           <h6>Weak To 4x</h6>
-                          <ul class="list">
+                          <ul className="list">
                               {WeakTo4x}
                           </ul>
                       </div>
-                      <div class="col">
+                      <div className="col">
                       </div>
                   </div>
                   <h5><b>Normal Damage (1x)</b></h5>
-                  <div class="row">
-                    <ul class="list">
+                  <div className="row">
+                    <ul className="list">
                       {NormalDamage}
                     </ul>
                   </div>
@@ -311,7 +233,7 @@ class Pokemon extends React.Component {
               <p>
                   Enter your 6 pokemon to see how they best counter the pokemon selected above.
               </p>
-              <p>
+                  {rankedSquadList}
                   <table>
                     <tr>
                       <th>Pokemon</th>
@@ -363,13 +285,13 @@ class Pokemon extends React.Component {
                       <td>Move 4</td>
                     </tr>
                   </table>    
-              </p>
           </div>
       );
     }
 }
 
-Pokemon.defaultProps = {pokedex: { "Bulbasaur": [types.grass, types.poison],
+Pokemon.defaultProps = {
+  pokedex: { "Bulbasaur": [types.grass, types.poison],
       "Ivysaur": [types.grass, types.poison],
       "Venusaur": [types.grass, types.poison],
       "Venusaur - Mega": [types.grass, types.poison],
@@ -555,7 +477,120 @@ Pokemon.defaultProps = {pokedex: { "Bulbasaur": [types.grass, types.poison],
       "Mew": [types.psychic],
       "Meltan": [types.steel],
       "Melmetal": [types.steel]
-    }};
+    },
+  damageBoard: {
+          [types.normal]: 1,
+          [types.fire]: 1,
+          [types.water]: 1,
+          [types.electric]: 1,
+          [types.grass]: 1,
+          [types.ice]: 1,
+          [types.fighting]: 1,
+          [types.poison]: 1,
+          [types.ground]: 1,
+          [types.flying]: 1,
+          [types.psychic]: 1,
+          [types.bug]: 1,
+          [types.rock]: 1,
+          [types.ghost]: 1,
+          [types.dragon]: 1,
+          [types.dark]: 1,
+          [types.steel]: 1,
+          [types.fairy]: 1
+      },
+  typeChart: {
+        [types.normal]: {
+          superEffective: [types.fighting], // fighting is super effective to normal
+          notVeryEffective: [],
+          noEffect: [types.ghost], // ghost has no effect to normal
+        },
+        [types.fire]: {
+          superEffective: [types.water, types.ground, types.rock],
+          notVeryEffective: [types.fire, types.grass, types.ice, types.bug, types.steel, types.fairy],
+          noEffect: [],
+        },
+        [types.water]: {
+          superEffective: [types.electric, types.grass],
+          notVeryEffective: [types.fire, types.water, types.ice, types.steel],
+          noEffect: [],
+        },
+        [types.electric]: {
+          superEffective: [types.ground],
+          notVeryEffective: [types.electric, types.flying, types.steel],
+          noEffect: [],
+        },
+        [types.grass]: {
+          superEffective: [types.fire, types.ice, types.poison, types.flying, types.bug],
+          notVeryEffective: [types.water, types.electric, types.grass, types.ground],
+          noEffect: [],
+        },
+        [types.ice]: {
+          superEffective: [types.fire, types.fighting, types.rock, types.steel],
+          notVeryEffective: [types.ice],
+          noEffect: [],
+        },
+        [types.fighting]: {
+          superEffective: [types.flying, types.psychic, types.fairy],
+          notVeryEffective: [types.bug, types.rock, types.dark],
+          noEffect: [],
+        },
+        [types.poison]: {
+          superEffective: [types.ground, types.psychic],
+          notVeryEffective: [types.grass, types.fighting, types.poison, types.bug, types.fairy],
+          noEffect: [],
+        },
+        [types.ground]: {
+          superEffective: [types.water, types.grass, types.ice],
+          notVeryEffective: [types.poison, types.rock],
+          noEffect: [types.electric],
+        },
+        [types.flying]: {
+          superEffective: [types.electric, types.ice, types.rock],
+          notVeryEffective: [types.grass, types.fighting, types.bug],
+          noEffect: [types.ground],
+        },
+        [types.psychic]: {
+          superEffective: [types.bug, types.ghost, types.dark],
+          notVeryEffective: [types.fighting, types.psychic],
+          noEffect: [],
+        },
+        [types.bug]: {
+          superEffective: [types.fire, types.flying, types.rock],
+          notVeryEffective: [types.grass, types.fighting, types.ground],
+          noEffect: [],
+        },
+        [types.rock]: {
+          superEffective: [types.water, types.grass, types.fighting, types.ground, types.steel],
+          notVeryEffective: [types.normal, types.fire, types.poison, types.flying],
+          noEffect: [],
+        },
+        [types.ghost]: {
+          superEffective: [types.ghost, types.dark],
+          notVeryEffective: [types.poison, types.bug],
+          noEffect: [types.normal, types.fighting],
+        },
+        [types.dragon]: {
+          superEffective: [types.ice, types.dragon, types.fairy],
+          notVeryEffective: [types.fire, types.water, types.electric, types.grass],
+          noEffect: [],
+        },
+        [types.dark]: {
+          superEffective: [types.fighting, types.bug, types.fairy],
+          notVeryEffective: [types.ghost, types.dark],
+          noEffect: [types.psychic],
+        },
+        [types.steel]: {
+          superEffective: [types.fire, types.fighting, types.ground],
+          notVeryEffective: [types.normal, types.grass, types.ice, types.flying, types.psychic, types.bug, types.rock, types.dragon, types.steel, types.fairy],
+          noEffect: [types.poison],
+        },
+        [types.fairy]: {
+          superEffective: [types.poison, types.steel],
+          notVeryEffective: [types.fighting, types.bug, types.dark],
+          noEffect: [types.dragon],
+        },
+      }
+};
 
 
 export default Pokemon;
