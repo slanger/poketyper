@@ -1,1 +1,44 @@
-{"assemblies":["Microsoft.AspNetCore.Authorization.dll","Microsoft.AspNetCore.Blazor.dll","Microsoft.AspNetCore.Blazor.HttpClient.dll","Microsoft.AspNetCore.Components.dll","Microsoft.AspNetCore.Components.Forms.dll","Microsoft.AspNetCore.Components.Web.dll","Microsoft.AspNetCore.Metadata.dll","Microsoft.Bcl.AsyncInterfaces.dll","Microsoft.Extensions.DependencyInjection.Abstractions.dll","Microsoft.Extensions.DependencyInjection.dll","Microsoft.Extensions.Logging.Abstractions.dll","Microsoft.Extensions.Options.dll","Microsoft.Extensions.Primitives.dll","Microsoft.JSInterop.dll","Mono.WebAssembly.Interop.dll","mscorlib.dll","PokeTyper.dll","PokeTyperWeb.dll","System.ComponentModel.DataAnnotations.dll","System.Core.dll","System.dll","System.Net.Http.dll","System.Runtime.CompilerServices.Unsafe.dll","System.Text.Encodings.Web.dll","System.Text.Json.dll","WebAssembly.Bindings.dll","WebAssembly.Net.Http.dll"],"entryAssembly":"PokeTyperWeb","linkerEnabled":true}
+{
+  "cacheBootResources": true,
+  "config": [ ],
+  "debugBuild": false,
+  "entryAssembly": "PokeTyperWeb",
+  "linkerEnabled": true,
+  "resources": {
+    "assembly": {
+      "Microsoft.AspNetCore.Components.dll": "sha256-Uyqx+Q+Jb1w81bgqVt\/SfR\/ixM7byJFl8nMdcssZHGA=",
+      "Microsoft.AspNetCore.Components.Web.dll": "sha256-g8YSCyCVT4krNWRR8F\/UDw\/RXCXzg\/1xbyGhokKhXio=",
+      "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-5yX5grM1gNzvvKW3X0soGWvhjYDgxnKtxcuDfHYrRis=",
+      "Microsoft.Bcl.AsyncInterfaces.dll": "sha256-jzHgXWAvWMkKIGFjZoT84tbe72E+H7CvTr\/Dryh4QPs=",
+      "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-XxDKVm+Xcxe3acKiZMJWPS2gLDQ9uYhzIz1uh7FK4Xc=",
+      "Microsoft.Extensions.Configuration.dll": "sha256-OheBOQmU5Ru\/zRIiKZX3zy+ZU1L\/0LwqrWjedAjGGto=",
+      "Microsoft.Extensions.Configuration.Json.dll": "sha256-DIFVaJy6CuisFQx3Ks\/jlpNF+gWZjmkPxYNlW+5pYTQ=",
+      "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "sha256-zpxvOBabncXme4cddZu12Pmh6Dn9hWM7ZxJe6Bj4Bz4=",
+      "Microsoft.Extensions.DependencyInjection.dll": "sha256-+NBzbh92lMGCdEY3zBAyP6eB5c5D6s3GQRhJidsbz8M=",
+      "Microsoft.Extensions.Logging.Abstractions.dll": "sha256-82iZfO8j\/HafShy+VWfgQQm1lOvOfjn3+qJKRE9HiyU=",
+      "Microsoft.Extensions.Logging.dll": "sha256-EFeBD7IWZvsZfM39a5fPLKqHmLp+5OZ2YtVBYCEH1ew=",
+      "Microsoft.Extensions.Options.dll": "sha256-HgBr\/TB16kPI961XXu2yC8\/Ln+WVqRJd3xWtCW1+hvE=",
+      "Microsoft.Extensions.Primitives.dll": "sha256-rJhMEc5GWwQKQNlp2bRK10zVB8Fr1XqPfKxDYUmUb78=",
+      "Microsoft.JSInterop.dll": "sha256-3cbvJEo8k8VJVQwyEZWWQ6yGRFQW8\/219DaOnmsX3e4=",
+      "Microsoft.JSInterop.WebAssembly.dll": "sha256-zV\/OfJNfNsG404X30Pwkdymdh1KmZpTVEmG\/JNFVc\/k=",
+      "mscorlib.dll": "sha256-tDTc+mljIUvS2+U6zcIoXk27kO38WT12j3T7O9uWZfk=",
+      "PokeTyper.dll": "sha256-TfbReMdnb8Gag2OK\/N4yxNB1L6tdeW6\/yfU4xio+0RM=",
+      "PokeTyperWeb.dll": "sha256-SAU\/kyTfCXXoDCBQcHUk9AFoh7lvc7vc4j5wjehEOTg=",
+      "System.Core.dll": "sha256-a\/r6Pg39CPwNxib2I8sSZHjoSgtNhSge4NFD1ljv1M8=",
+      "System.dll": "sha256-r27owScU6\/ivlkYEKmzwUq1zrDj4hhH7fwCD1nOXn2w=",
+      "System.Net.Http.dll": "sha256-THWG9SVG\/RduuWxZpbYiM+LSbmjsaosqfbYEDeKV2KY=",
+      "System.Net.Http.WebAssemblyHttpHandler.dll": "sha256-c7oDnAXc9Y8FIW5f56JD1cragSkuVtSmrza63iQ50q4=",
+      "System.Runtime.CompilerServices.Unsafe.dll": "sha256-\/Va6e1kqGEYadZ1giADHw9qIAkvkNV5o++fZp6FFtuk=",
+      "System.Text.Encodings.Web.dll": "sha256-fKe+01KLppUGdabdGP8RAh1qut\/rPjgIwb1ygnajKC4=",
+      "System.Text.Json.dll": "sha256-ounbLDcKzSKNfI7g\/+SccNPMpoPlLuvMNd2tJE6xTEc=",
+      "WebAssembly.Bindings.dll": "sha256-+EYp0KpQVGO+R1fbgvaka9JSF4W+egylsshDEyfqjcc="
+    },
+    "pdb": null,
+    "runtime": {
+      "dotnet.3.2.0.js": "sha256-mPoqx7XczFHBWk3gRNn0hc9ekG1OvkKY4XiKRY5Mj5U=",
+      "dotnet.timezones.dat": "sha256-3S0qzYaBEKOBXarzVLNzNAFXlwJr6nI3lFlYUpQTPH8=",
+      "dotnet.wasm": "sha256-UC\/3Rm1NkdNdlIrzYARo+dO\/HDlS5mhPxo0IQv7kma8="
+    },
+    "satelliteResources": null
+  }
+}
