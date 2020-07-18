@@ -4,10 +4,11 @@
 explore the different types and type combinations of Pokemon. You find the website at
 <https://slanger.github.io/poketyper/>
 
-There are two pages in this website:
+There are three pages in this website:
 
 -   Types - Tells you the resistances and weaknesses of any Pokemon type or type combination.
 -   Coverage - Tells you which types are "covered by", or weak to, a particular Pokemon move set.
+-   Pokemon - Look up the resistances and weaknesses for Pokemon.
 
 ## Code Structure
 
@@ -42,8 +43,9 @@ button on the project you want to run (either the [web app](src/PokeTyperWeb) or
 
 To build the code and run PokeTyper locally with the `dotnet` command-line interface (CLI), first
 download and install the latest version of .NET Core 3.1 from
-[here](https://dotnet.microsoft.com/download/dotnet-core/3.1). Then open up the command
-prompt/terminal and navigate to one of the project directories (either `src/PokeTyperWeb` for the
-web app or `src/PokeTyperConsole` for the console app) and run `dotnet run` to run the project. For
-the web app, after running `dotnet run`, open up a web browser and navigate to
-http://localhost:65036/ to view the web app in the browser.
+[here](https://dotnet.microsoft.com/download/dotnet-core/3.1). Make sure to install the SDK ("build
+apps") and not just the runtime ("run apps"). Then open up the command prompt/terminal and navigate
+to one of the project directories (either `src/PokeTyperWeb` for the web app or
+`src/PokeTyperConsole` for the console app) and run `dotnet run` to run the project. For the web
+app, after running `dotnet run`, open up a web browser and navigate to http://localhost:5000 to
+view the web app in the browser.
